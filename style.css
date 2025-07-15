@@ -393,6 +393,7 @@ main {
 
 .review-summary-table {
   margin-top: 2rem;
+  margin-bottom: 3rem; /* Add spacing below the table */
   overflow-x: auto;
 }
 
