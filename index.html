@@ -3,126 +3,229 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Brand Management – Year in Review</title>
+  <title>Brand Management – 2025 Year in Review</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root{
-      /* Easy theme tuning */
-      --primary:#2563eb; /* blue */
-      --accent:#ef4444;  /* red */
-      --mint:#10b981;    /* success */
-      --ink:#0b1220;     /* text dark */
-      --slate:#0f172a;   /* deep bg */
-      --bg:#f7f8fb;      /* page bg */
-      --card:#ffffff;    /* card bg */
-      --muted:#6b7280;   /* muted text */
-      --ring: 0 10px 25px rgba(37,99,235,.25);
-      --ring-accent: 0 10px 25px rgba(239,68,68,.2);
-      --radius: 18px;
+    :root {
+      --primary:#2563eb; --primary-light:#60a5fa; --primary-dark:#1d4ed8;
+      --accent:#ef4444; --accent-light:#f87171;
+      --success:#10b981; --success-light:#34d399;
+      --warning:#f59e0b; --warning-light:#fbbf24;
+      --ink:#0b1220; --slate:#0f172a; --bg:#f7f8fb;
+      --card:#ffffff; --muted:#6b7280; --muted-light:#9ca3af;
+      --border:rgba(2,6,23,.08);
+      --ring:0 10px 25px rgba(37,99,235,.15);
+      --radius:16px; --radius-lg:24px; --transition:all .3s ease;
     }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    .dark-mode {
+      --primary:#3b82f6; --primary-light:#60a5fa; --accent:#ef4444; --success:#10b981;
+      --ink:#f3f4f6; --slate:#111827; --bg:#0f172a; --card:#1e293b; --muted:#94a3b8; --muted-light:#64748b; --border:rgba(255,255,255,.08);
+      --ring:0 10px 25px rgba(59,130,246,.15);
+    }
+    *{box-sizing:border-box; margin:0; padding:0}
+    html,body{height:100%; scroll-behavior:smooth}
     body{
-      margin:0;
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
       background:
         radial-gradient(1200px 800px at -10% -20%, rgba(37,99,235,.08), transparent 50%),
         radial-gradient(1200px 800px at 110% 120%, rgba(239,68,68,.08), transparent 50%),
         var(--bg);
-      line-height:1.45;
-      scroll-behavior:smooth;
+      line-height:1.6; transition:background-color .3s ease;
+    }
+    body.dark-mode{
+      background:
+        radial-gradient(1200px 800px at -10% -20%, rgba(37,99,235,.12), transparent 50%),
+        radial-gradient(1200px 800px at 110% 120%, rgba(239,68,68,.12), transparent 50%),
+        var(--bg);
     }
 
-    /* Top Nav */
-    .nav{
-      position:sticky; top:0; z-index:1000;
-      backdrop-filter:saturate(1.2) blur(10px);
-      background:rgba(255,255,255,.7);
-      border-bottom:1px solid rgba(15,23,42,.06);
-    }
+    /* Nav */
+    .nav{position:sticky; top:0; z-index:1000; backdrop-filter:saturate(1.8) blur(12px); background:rgba(255,255,255,.82); border-bottom:1px solid var(--border); transition:var(--transition)}
+    body.dark-mode .nav{background:rgba(30,41,59,.82); border-bottom:1px solid rgba(255,255,255,.08)}
     .nav-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px}
     .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px}
-    .brand .logo{width:28px; height:28px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,var(--primary),#60a5fa); color:#fff; font-size:16px; box-shadow:var(--ring)}
-    .nav a{color:#1f2937; text-decoration:none; font-weight:600; padding:8px 12px; border-radius:10px}
-    .nav a:hover{background:#edf2ff}
+    .brand .logo{width:32px; height:32px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,var(--primary),var(--primary-light)); color:#fff; font-size:16px; box-shadow:var(--ring)}
+    .nav a{color:var(--ink); text-decoration:none; font-weight:600; padding:8px 12px; border-radius:10px; transition:var(--transition)}
+    .nav a:hover,.nav a.active{background:var(--primary-light); color:#fff}
     .nav-links{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap}
-    .btn{display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; padding:12px 16px; border-radius:14px; font-weight:700}
-    .btn.primary{background:linear-gradient(135deg,var(--primary),#3b82f6); color:#fff; box-shadow:var(--ring)}
-    .btn.ghost{background:#ffffffc0; border:1px solid rgba(2,6,23,.08)}
+    .btn{display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; padding:12px 20px; border-radius:14px; font-weight:700; transition:var(--transition)}
+    .btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; box-shadow:var(--ring)}
+    .btn.primary:hover{transform:translateY(-2px); box-shadow:0 15px 30px rgba(37,99,235,.25)}
+    .btn.ghost{background:rgba(255,255,255,.8); border:1px solid var(--border)}
+    .btn.ghost:hover{background:#fff; box-shadow:0 5px 15px rgba(0,0,0,.08)}
+    body.dark-mode .btn.ghost{background:rgba(255,255,255,.1); color:var(--ink)}
+    body.dark-mode .btn.ghost:hover{background:rgba(255,255,255,.15)}
+    .theme-toggle{background:none; border:none; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); transition:var(--transition)}
+    .theme-toggle:hover{background:rgba(0,0,0,.05); color:var(--ink)}
+    body.dark-mode .theme-toggle:hover{background:rgba(255,255,255,.1)}
 
     /* Layout */
-    .section{padding:72px 20px}
+    .section{padding:80px 20px}
     .wrap{max-width:1200px; margin:0 auto}
-    .grid{display:grid; gap:20px}
-    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .three{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid{display:grid; gap:24px}
+    .two{grid-template-columns:repeat(auto-fit,minmax(400px,1fr))}
+    .three{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+    .four{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 
     /* Hero */
-    .hero{padding:110px 20px 72px}
-    .hero-card{
-      background:linear-gradient(180deg, #ffffff, #f6f9ff);
-      border:1px solid rgba(2,6,23,.06);
-      border-radius:24px; overflow:hidden; position:relative;
-      box-shadow:0 20px 60px rgba(2,6,23,.06);
-    }
-    .hero-body{padding:44px}
-    .eyebrow{display:inline-flex; gap:8px; align-items:center; padding:6px 10px; background:#eef2ff; border-radius:999px; color:#1d4ed8; font-weight:700; letter-spacing:.2px; margin-bottom:16px}
-    .title{font-size: clamp(28px, 6vw, 54px); line-height:1.05; margin:0 0 10px}
-    .lead{font-size: clamp(16px, 2.6vw, 20px); color:var(--muted); max-width:65ch}
-    .hero-footer{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px}
-    .hero-fig{position:absolute; inset:auto -60px -80px auto; width:min(520px,55vw); opacity:.9; filter:drop-shadow(0 30px 60px rgba(2,6,23,.25))}
-    .hero-fig svg{display:block}
+    .hero{padding:120px 20px 80px; position:relative; overflow:hidden}
+    .hero::before{content:''; position:absolute; top:-50%; right:-20%; width:600px; height:600px; border-radius:50%; background:linear-gradient(135deg, rgba(37,99,235,.1), transparent); z-index:-1}
+    .hero-card{background:linear-gradient(180deg,#fff,#f6f9ff); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; position:relative; box-shadow:0 25px 70px rgba(2,6,23,.08); transition:var(--transition)}
+    body.dark-mode .hero-card{background:linear-gradient(180deg,#1e293b,#1a2438); border:1px solid rgba(255,255,255,.08); box-shadow:0 25px 70px rgba(0,0,0,.2)}
+    .hero-body{padding:60px}
+    @media (max-width:768px){.hero-body{padding:40px 24px}}
+    .eyebrow{display:inline-flex; gap:8px; align-items:center; padding:8px 16px; background:#eef2ff; border-radius:999px; color:var(--primary-dark); font-weight:700; letter-spacing:.2px; margin-bottom:20px; font-size:14px}
+    body.dark-mode .eyebrow{background:rgba(37,99,235,.2); color:var(--primary-light)}
+    .title{font-size:clamp(32px,6vw,60px); line-height:1.05; margin:0 0 16px; font-weight:800; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text}
+    .lead{font-size:clamp(16px,2.6vw,22px); color:var(--muted); max-width:65ch; margin-bottom:32px}
+    .hero-footer{display:flex; flex-wrap:wrap; gap:16px; margin-top:32px}
 
     /* Cards */
-    .card{
-      background:var(--card);
-      border:1px solid rgba(2,6,23,.06);
-      border-radius:var(--radius);
-      box-shadow:0 20px 50px rgba(2,6,23,.05);
-      padding:22px;
-    }
-    .card h3{margin:0 0 8px}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:0 10px 40px rgba(2,6,23,.05); padding:28px; transition:var(--transition); height:100%; display:flex; flex-direction:column}
+    .card:hover{transform:translateY(-5px); box-shadow:0 20px 60px rgba(2,6,23,.1)}
+    body.dark-mode .card{box-shadow:0 10px 40px rgba(0,0,0,.2)}
+    body.dark-mode .card:hover{box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .card h2,.card h3{margin:0 0 12px}
+    .card p{margin-bottom:16px}
     .muted{color:var(--muted)}
 
     /* KPI */
-    .kpi{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
-    .kpi .num{font-size:40px; font-weight:900}
-    .kpi b{font-size:14px; color:var(--muted)}
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; background:#ecfeff; border:1px solid #cffafe; color:#0e7490; border-radius:999px; font-weight:700}
+    .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin-top:40px}
+    .kpi-card{background:var(--card); border-radius:var(--radius); padding:24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.05); transition:var(--transition)}
+    .kpi-card:hover{transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,0,0,.1)}
+    .kpi-card .value{font-size:42px; font-weight:800; margin:10px 0; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text}
+    .kpi-card .label{color:var(--muted); font-size:14px; font-weight:600}
+    .kpi-card .trend{display:inline-flex; align-items:center; gap:4px; margin-top:8px; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700}
+    .trend.up{background:rgba(16,185,129,.15); color:#047857}
+    .trend.down{background:rgba(239,68,68,.15); color:#b91c1c}
 
-    /* Timeline */
-    .timeline{position:relative; padding-left:28px}
-    .timeline:before{content:""; position:absolute; left:12px; top:0; bottom:0; width:4px; border-radius:4px; background:linear-gradient(var(--primary), var(--accent))}
-    .tl-item{position:relative; margin:0 0 18px}
-    .tl-item:before{content:""; position:absolute; left:-22px; top:6px; width:16px; height:16px; border-radius:50%; background:#fff; border:4px solid var(--primary); box-shadow:0 4px 10px rgba(2,6,23,.15)}
+    /* Timeline, progress, badges */
+    .timeline{position:relative; padding-left:32px}
+    .timeline::before{content:""; position:absolute; left:15px; top:8px; bottom:8px; width:4px; border-radius:4px; background:linear-gradient(to bottom,var(--primary),var(--accent))}
+    .tl-item{position:relative; margin:0 0 28px; padding:16px; border-radius:var(--radius); background:rgba(255,255,255,.5); border:1px solid var(--border)}
+    body.dark-mode .tl-item{background:rgba(30,41,59,.5)}
+    .tl-item::before{content:""; position:absolute; left:-26px; top:24px; width:16px; height:16px; border-radius:50%; background:#fff; border:4px solid var(--primary); box-shadow:0 4px 10px rgba(2,6,23,.15); z-index:2}
+    .progress-container{margin:16px 0}
+    .progress-label{display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px; color:var(--muted)}
+    .progress{height:12px; background:#eef2ff; border-radius:999px; overflow:hidden}
+    body.dark-mode .progress{background:rgba(255,255,255,.1)}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--primary),var(--primary-light)); border-radius:inherit; transition:width 1.2s cubic-bezier(.2,.9,.2,1); position:relative; overflow:hidden}
+    .bar::after{content:''; position:absolute; inset:0; background-image:linear-gradient(-45deg, rgba(255,255,255,.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.2) 50%, rgba(255,255,255,.2) 75%, transparent 75%, transparent); background-size:20px 20px; animation:move 1s linear infinite}
+    @keyframes move{to{background-position:20px 20px}}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; background:#fff1f2; border:1px solid #ffe4e6; color:#be123c; border-radius:12px; font-weight:700; font-size:14px}
+    .badge2{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; background:#9bf3a2; border:1px solid #8aee8f; color:#084e08; border-radius:12px; font-weight:700; font-size:14px}
+    .badge3{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; background:#e9c475; border:1px solid #eedc8a; color:#4e3b08; border-radius:12px; font-weight:700; font-size:14px}
+    footer{padding:60px 20px 40px; color:var(--muted); text-align:center; border-top:1px solid var(--border)}
+    .reveal{opacity:0; transform:translateY(20px) scale(.98); filter:blur(4px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease}
+    .reveal.show{opacity:1; transform:none; filter:none}
+    .chart-container{position:relative; height:300px; width:100%}
+    .section-divider{text-align:center; margin:60px 0; position:relative}
+    .section-divider span{background:var(--card); padding:0 20px; position:relative; z-index:2; color:var(--muted); font-weight:600}
+    .section-divider::before{content:''; position:absolute; left:0; right:0; top:50%; height:1px; background:var(--border); z-index:1}
 
-    /* Progress Bars */
-    .progress{height:10px; background:#eef2ff; border-radius:999px; overflow:hidden}
-    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#60a5fa); border-radius:inherit; transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
-
-    /* List badges */
-    .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; background:#fff1f2; border:1px solid #ffe4e6; color:#be123c; border-radius:12px; font-weight:700}
-
-    /* Footer */
-    footer{padding:40px 20px; color:var(--muted)}
-
-    /* Reveal Animations (Canva-like) */
-    .reveal{opacity:0; transform:translateY(16px) scale(.98); filter:blur(2px);}
-    .reveal.show{opacity:1; transform:none; filter:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease}
-
-    /* Print (export to PDF) */
-    @media print{
-      .nav,.hero-fig,.hero-footer .btn{display:none !important}
-      .section{padding:24px 0}
-      body{background:#fff}
-      .card{box-shadow:none}
+    /* ---------- Table styles ---------- */
+    .table-card .table-controls{display:flex; gap:12px; align-items:center; margin:8px 0 14px}
+    .table-card input[type="search"]{
+      flex:1; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.8);
+      outline:none; font:inherit; color:inherit;
     }
+    body.dark-mode .table-card input[type="search"]{background:rgba(255,255,255,.06)}
+    .table-wrap{overflow:auto; border:1px solid var(--border); border-radius:12px}
+    table{width:100%; border-collapse:separate; border-spacing:0; min-width:640px}
+    thead th{
+      position:sticky; top:0; background:var(--card); color:var(--muted); text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.04em;
+      border-bottom:1px solid var(--border); padding:12px; cursor:pointer; user-select:none;
+    }
+    tbody td{padding:12px; border-bottom:1px solid var(--border)}
+    tbody tr:hover{background:rgba(37,99,235,.04)}
+    .num{text-align:right; font-variant-numeric:tabular-nums}
+    .sort-indicator{margin-left:6px; opacity:.6}
+    .pill-rating{display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.12); color:#047857; border:1px solid rgba(16,185,129,.25); padding:4px 8px; border-radius:999px; font-weight:700; font-size:12px}
+    .pill-rating.neg{background:rgba(239,68,68,.12); color:#b91c1c; border-color:rgba(239,68,68,.25)}
+
+    /* ---------- Presentation Focus Mode ---------- */
+    .card, .kpi-card{cursor:zoom-in}
+    .focus-backdrop{position:fixed; inset:0; background:rgba(3,7,18,.55); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:1600}
+    .focus-backdrop.show{opacity:1; pointer-events:auto}
+    body.focus-mode{overflow:hidden}
+    .card.focused, .kpi-card.focused{
+      position:fixed; left:50%; top:52%; transform:translate(-50%,-50%);
+      width:min(1100px,92vw); max-height:86vh; overflow:auto; z-index:1700;
+      box-shadow:0 40px 120px rgba(2,6,23,.35); cursor:zoom-out; background:var(--card)
+    }
+    .card.focused .chart-container{height:70vh}
+    .focus-close{position:sticky; top:0; margin-left:auto; background:rgba(0,0,0,.6); color:#fff; border:0; border-radius:10px; padding:8px 10px; font-weight:800; line-height:1; cursor:pointer; z-index:1800}
+    body.dark-mode .focus-close{background:rgba(255,255,255,.18)}
+
+    /* Print & responsive tweaks */
+    @media print{.nav,.hero-fig,.hero-footer .btn,.theme-toggle{display:none!important} .section{padding:24px 0} body{background:#fff; color:#000; font-size:12pt; line-height:1.4}}
+    @media (max-width:768px){
+      .nav-inner{flex-wrap:wrap}
+      .nav-links{order:3; width:100%; margin-top:10px; justify-content:center}
+      .grid.two,.grid.three,.grid.four{grid-template-columns:1fr}
+      .hero-footer{flex-direction:column}
+      .btn{width:100%; justify-content:center}
+    }
+
+    /* ---- NEW: Pill list styles for Positive Reviews by Month ---- */
+    .pill-list{display:grid; gap:10px; margin-top:10px}
+    .pill-row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 16px; border-radius:999px; font-weight:700; letter-spacing:.2px;
+      box-shadow:0 2px 6px rgba(2,6,23,.04); border:1px solid var(--border);
+    }
+    .pill-row .month{opacity:.9}
+    .pill-row .count{font-variant-numeric:tabular-nums}
+    .tier-pink{background:#fff1f2; color:#9f1239; border-color:#ffe4e6}
+    .tier-lime{background:#ecfccb; color:#365314; border-color:#d9f99d}
+    .tier-gold{background:#fef3c7; color:#92400e; border-color:#fde68a}
+    .tier-amber{background:#fffbeb; color:#92400e; border-color:#fde68a}
+    .tier-lightgreen{background:#dcfce7; color:#065f46; border-color:#bbf7d0}
+    .tier-green{background:#bbf7d0; color:#065f46; border-color:#86efac}
+
+    /* === Meet the Team (dashboard-native) === */
+    .team-wrap{margin-top:32px}
+    .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:24px}
+    .team-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(2,6,23,.05);padding:20px;transition:transform .25s ease, box-shadow .25s ease}
+    .team-card:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(2,6,23,.10)}
+    .team-card h3{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .team-sub{color:var(--muted);font-size:13px;margin:-6px 0 12px}
+    .team-list{display:grid;gap:10px}
+    .person{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--border);
+      border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.5));
+      transition:background .25s ease, transform .25s ease}
+    body.dark-mode .person{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.04))}
+    .person:hover{transform:translateY(-2px)}
+    .avatar{flex:0 0 40px;height:40px;border-radius:12px;display:grid;place-items:center;
+      font-weight:800;color:#fff;box-shadow:var(--ring);
+      background:linear-gradient(135deg,var(--primary),var(--accent))}
+    .info{flex:1}
+    .name{font-weight:800;line-height:1.2}
+    .meta{font-size:13px;color:var(--muted);line-height:1.35;margin-top:2px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .chip{font-size:11px;font-weight:800;letter-spacing:.02em;padding:6px 10px;border-radius:999px;border:1px solid var(--border)}
+    .chip.tier{background:rgba(16,185,129,.12);color:#047857;border-color:rgba(16,185,129,.25)}
+    .chip.sup{background:rgba(59,130,246,.12);color:#1e40af;border-color:rgba(59,130,246,.25)}
+    .chip.floor{background:rgba(234,88,12,.12);color:#9a3412;border-color:rgba(234,88,12,.25)}
+    .chip.loc{background:rgba(148,163,184,.15);color:var(--muted);border-color:rgba(148,163,184,.25)}
+
+    /* Stagger animation for team people */
+    .reveal .person{opacity:0;transform:translateY(8px);transition:opacity .45s ease, transform .45s ease}
+    .reveal.show .person{opacity:1;transform:none}
+
+    /* === Headcount & Capacity: metric chips === */
+    .metrics{display:flex; flex-wrap:wrap; gap:10px; margin:8px 0 14px}
+    .metric{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; font-weight:800; font-size:13px; border:1px solid var(--border)}
+    .metric.blue{background:#e0ecff; color:#1e3a8a; border-color:#bfdbfe}
+    .metric.green{background:#dcfce7; color:#065f46; border-color:#bbf7d0}
+    .metric.purple{background:#efe9ff; color:#5b21b6; border-color:#ddd6fe}
   </style>
 </head>
 <body>
@@ -131,94 +234,238 @@
     <div class="nav-inner">
       <div class="brand">
         <div class="logo">BM</div>
-        <div>Brand Management · Year in Review</div>
+        <div>Brand Management · Year 2025</div>
       </div>
       <nav class="nav-links">
         <a href="#highlights">Highlights</a>
         <a href="#timeline">Timeline</a>
         <a href="#initiatives">Initiatives</a>
         <a href="#wins">Key Wins</a>
+        <a href="#compare">Comparisons</a>
+        <a href="#platforms">Platforms</a>
         <a href="#goals">Goals</a>
       </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
       <button class="btn ghost" onclick="window.print()" title="Export to PDF">🖨️ Export</button>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap">
-      <div class="hero-card reveal show">
-        <img class="hero-fig" alt="decorative chart" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>
-          <svg xmlns='http://www.w3.org/2000/svg' width='820' height='420' viewBox='0 0 820 420'>
-            <defs>
-              <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
-                <stop stop-color='%232563eb' offset='0'/>
-                <stop stop-color='%2360a5fa' offset='1'/>
-              </linearGradient>
-              <filter id='s' x='-20%' y='-20%' width='140%' height='140%'>
-                <feDropShadow dx='0' dy='18' stdDeviation='20' flood-opacity='.2'/>
-              </filter>
-            </defs>
-            <rect width='820' height='420' rx='28' fill='white'/>
-            <g filter='url(%23s)'>
-              <path d='M40 320 L140 280 L240 290 L340 240 L440 260 L540 200 L640 220 L740 160' stroke='url(%23g)' stroke-width='10' fill='none' />
-            </g>
-            <g fill='%23d1d5db'>
-              <rect x='80' y='340' width='40' height='20' rx='6'/>
-              <rect x='140' y='340' width='60' height='20' rx='6'/>
-              <rect x='260' y='340' width='90' height='20' rx='6'/>
-            </g>
-          </svg>"/>
-        <div class="hero-body">
-          <div class="eyebrow">🚀 Team Leadership Meeting · 2025</div>
-          <h1 class="title">Brand Management</h1>
-          <div class="hero-footer">
-            <a class="btn primary" href="#highlights">View Highlights ↓</a>
-            <a class="btn ghost" href="#timeline">Jump to Timeline</a>
-          </div>
-        </div>
+    <div class="hero-card reveal show">
+      <div class="hero-body">
+        <div class="eyebrow">🚀 Team Leadership Meeting · 2025</div>
+        <h1 class="title">Brand Management</h1>
       </div>
     </div>
   </section>
 
   <!-- HIGHLIGHTS / KPIs -->
-  
+  <section id="highlights" class="section">
+    <div class="wrap">
+      <div class="card reveal">
+        <h2>2025 Performance Highlights</h2>
+        <p class="muted">Key metrics demonstrating our team's impact on brand reputation and customer satisfaction.</p>
+        <div class="kpi-grid">
+          <div class="kpi-card reveal">
+            <div class="value" data-count="4.5">0</div>
+            <div class="label">Average Rating</div>
+          </div>
+          <div class="kpi-card reveal">
+            <div class="value" data-count="726">0</div>
+            <div class="label">Reviews Removed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEET THE TEAM (enhanced, dashboard-native) -->
+      <div class="team-wrap reveal">
+        <div class="team-grid">
+          <!-- Customer Success -->
+          <div class="team-card">
+            <h3>⭐ Customer Success</h3>
+            <div class="team-sub">(All based in Santiago)</div>
+            <div class="team-list" id="team-success">
+              <div class="person">
+                <div class="avatar" aria-hidden="true">NJ</div>
+                <div class="info">
+                  <div class="name">Nathan Jones</div>
+                  <div class="meta">Handles outbound post-claim calls and filtering processes.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">LS</div>
+                <div class="info">
+                  <div class="name">Lorie Smith</div>
+                  <div class="meta">Responsible for review posting and supports the incentive program.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">LJ</div>
+                <div class="info">
+                  <div class="name">Lorraine Jackson</div>
+                  <div class="meta">Focused on customer feedback analysis to improve post-claim experience.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">NL</div>
+                <div class="info">
+                  <div class="name">Nashla Lizardo</div>
+                  <div class="meta">Oversees floor support, manages social media interactions for the team, works on new initiatives, enhancements, etc.</div>
+                  <div class="chips">
+                    <span class="chip sup">Supervisor</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Complaints -->
+          <div class="team-card">
+            <h3>⚠️ Customer Complaints</h3>
+            <div class="team-list" id="team-complaints">
+              <div class="person">
+                <div class="avatar">JF</div>
+                <div class="info">
+                  <div class="name">Jackie Flores</div>
+                  <div class="meta">(New York) – Hybrid agent with experience in GCS and Billing. Works on back office tasks, calls, and manages the expenses sheet.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">New York</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">EE</div>
+                <div class="info">
+                  <div class="name">Emi Estrella</div>
+                  <div class="meta">(Santiago) – Hybrid agent focused on post-mortem analysis, calls, and breakdowns.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">IG</div>
+                <div class="info">
+                  <div class="name">Ivette Gomez</div>
+                  <div class="meta">(Santiago) – New hybrid agent assisting with case analysis, breakdowns, and customer calls.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">AC</div>
+                <div class="info">
+                  <div class="name">Alex Collado</div>
+                  <div class="meta">(Santiago) – Call agent supporting customer complaint resolution.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">NL</div>
+                <div class="info">
+                  <div class="name">Nigel Liloy</div>
+                  <div class="meta">(Santiago) – Call agent supporting customer complaint resolution.</div>
+                  <div class="chips">
+                    <span class="chip tier">Tier 1</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">MR</div>
+                <div class="info">
+                  <div class="name">Mike Rodriguez</div>
+                  <div class="meta">(Santiago) – Operations Specialist responsible for real-time KPI monitoring and internal enhancements.</div>
+                  <div class="chips">
+                    <span class="chip floor">Floor Support</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">ES</div>
+                <div class="info">
+                  <div class="name">Eddy Sanchez</div>
+                  <div class="meta">(New York) – Provides floor support, handles complaint breakdowns, and performs data analysis.</div>
+                  <div class="chips">
+                    <span class="chip floor">Floor Support</span>
+                    <span class="chip loc">New York</span>
+                  </div>
+                </div>
+              </div>
+              <div class="person">
+                <div class="avatar">AS</div>
+                <div class="info">
+                  <div class="name">Anthony Smith</div>
+                  <div class="meta">(Santiago)– Senior supervisor responsible for coaching, escalation training, and team performance oversight.</div>
+                  <div class="chips">
+                    <span class="chip sup">Coach / Supervisor</span>
+                    <span class="chip loc">Santiago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /Customer Complaints -->
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- TIMELINE -->
   <section id="timeline" class="section">
     <div class="wrap grid two">
       <div class="card reveal">
-        <h2 style="margin:0 0 8px">Milestone Timeline</h2>
-        <p class="muted">What shipped, when it shipped, and why it mattered.</p>
+        <h2 style="margin:0 0 8px">Internal Tools & Modules Revamp</h2>
+        <p class="muted">As part of our operational evolution, we’ve developed and upgraded several internal tools and modules to support scalability, accountability, and performance visibility across all areas of Brand Management.</p>
         <div class="timeline" style="margin-top:16px">
-          <div class="tl-item">
-            <h3>Q1 · VIP Guardians program launched</h3>
-            <p class="muted">Assigned handlers to high-visibility accounts; ensured smooth claim processing end-to-end.</p>
-          </div>
-          <div class="tl-item">
-            <h3>Q2 · Complaint taxonomy + root-cause tracking</h3>
-            <p class="muted">Standardized labels: Low Contribution, Tech Delays, Claim Delay, Coverage Denied, etc. Enabled sharper weekly analysis.</p>
-          </div>
-          <div class="tl-item">
-            <h3>Q3 · Review Removal Forum + public FAQ revamp</h3>
-            <p class="muted">Launched evergreen updates page and process transparency; boosted trust and reduced duplicate tickets.</p>
-          </div>
-          <div class="tl-item">
-            <h3>Q4 · Ops workshops + BBB takeover</h3>
-            <p class="muted">Partnered with Ops to fix systemic issues; centralized BBB response ownership for faster SLAs.</p>
-          </div>
+          <div class="tl-item"><h3>Enhanced Reviews & Ratings Module</h3><p class="muted">Revamped the backend architecture and reporting logic to improve how we capture, categorize, and measure positive review performance across all platforms.</p></div>
+          <div class="tl-item"><h3>Complaints Module (Internal Tracking)</h3><p class="muted">Launched a centralized tracking tool for both organically sourced and manually submitted complaints, giving us full visibility into recurring issues and response outcomes.</p></div>
+          <div class="tl-item"><h3>Review Incentive Program FAQ</h3><p class="muted">Published a clear, internal-facing FAQ outlining rules, eligibility, and payout structure for the incentive program to ensure transparency and consistency across departments.</p></div>
+          <div class="tl-item"><h3>Negative Review Agenda Enhancements</h3><p class="muted">Automated parts of the agenda process and clarified follow-up logic and ownership to reduce delays, eliminate missed escalations, and improve resolution speed.</p></div>
+          <div class="tl-item"><h3>Enhanced Reviews & Complaints Sheet</h3><p class="muted">Redesigned our primary tracking sheet for both reviews and complaints, improving auditability, trend visibility, and real-time performance evaluation.</p></div>
+          <div class="tl-item"><h3>Expense Tracking Sheet</h3><p class="muted">Created a centralized sheet to calculate all goodwill expenses tied to review removals and complaint resolutions; including elevated refunds, kick-ins, gift cards, and cancellations, providing better visibility and control over total spend.</p></div>
         </div>
       </div>
+
+      <!-- UPDATED HEADCOUNT & CAPACITY CARD -->
       <div class="card reveal">
-        <h2 style="margin:0 0 8px">Headcount & Capacity</h2>
-        <p class="muted">Team scaled to meet demand without losing quality.</p>
-        <ul>
-          <li><b>75% growth</b>: 8 → 14 agents by July.</li>
-          <li><b>Scheduling & adherence</b> improved via daily huddles + dashboards.</li>
-          <li><b>Training</b>: playbooks for escalations, refunds, and review strategies.</li>
+        <h2 style="margin:0 0 8px">👥 Headcount & Capacity</h2>
+        <p class="muted">The team scaled to meet rising demand, and expansion is still in progress.</p>
+
+        <!-- Metric chips -->
+        <div class="metrics">
+          <span class="metric blue"><span style="font-weight:900">14</span> Agents</span>
+          <span class="metric green"><span style="font-weight:900">2</span> Supervisors</span>
+          <span class="metric purple"><span style="font-weight:900">6</span> Hybrid Roles</span>
+        </div>
+
+        <!-- Keep original bullet text -->
+        <ul style="padding-left:18px; margin-top:8px">
+          <li><b>85% growth</b> from 8 to 14 agents by July.</li>
+          <li><b>2 additional hires</b> planned to support volume and coverage.</li>
+          <li><b>Scheduling and Adherence</b>: improved through daily huddles and meetings.</li>
         </ul>
-        <div class="progress" style="margin-top:16px"><div class="bar" data-width="85"></div></div>
-        <p class="muted" style="margin-top:8px">Capacity utilization target: <b>85%</b> sustained without backlog.</p>
       </div>
     </div>
   </section>
@@ -226,59 +473,190 @@
   <!-- INITIATIVES -->
   <section id="initiatives" class="section">
     <div class="wrap">
+      <h2 style="margin-bottom: 24px;">Customer Complaints Revamp</h2>
       <div class="grid three">
         <div class="card reveal">
-          <h3>🔍 Deep Complaint Analysis</h3>
-          <p class="muted">Weekly root-cause reviews turned scattered tickets into specific fixes, directly lifting CSAT and first-touch resolution.</p>
+          <h3>🔍 BBB Complaint Responses</h3>
+          <p class="muted">BBB responses were standardized and structured with detailed resolution steps, increasing the likelihood of positive outcomes.</p>
         </div>
         <div class="card reveal">
-          <h3>🧠 Coaching & QA Alignment</h3>
-          <p class="muted">Targeted coaching boosted accuracy on policy math and tone; fewer escalations and refunds.</p>
+          <h3>🧠 Review Analysis</h3>
+          <p class="muted">Every negative review and complaint is now analyzed, with insights routed to Operations for training and process correction.</p>
         </div>
         <div class="card reveal">
-          <h3>🛠️ Tooling & Automation</h3>
-          <p class="muted">Internal sheets → interactive dashboard; faster case assignment, PCF tracking, and approach templates.</p>
+          <h3>🛠️ Post-Mortem Evaluation</h3>
+          <p class="muted">Post-mortems on complex cases generate concrete action items that are tracked and implemented to avoid repeat issues.</p>
         </div>
         <div class="card reveal">
-          <h3>🤝 Procurement Partnership</h3>
-          <p class="muted">Set clear SLAs; resolved option-latency on AC/HVAC and reduced cycle time by 27%.</p>
+          <h3>🤝 Team Assistance</h3>
+          <p class="muted">Agents now have 1:1 coaching with Tier 3 every other day, leading to a 30%+ improvement in success rate.</p>
         </div>
         <div class="card reveal">
-          <h3>🛡️ VIP Guardians</h3>
-          <p class="muted">No special treatment—just zero-friction claims. Visibility without queue-jumping.</p>
+          <h3>🛡️ Former VIP / Guardians</h3>
+          <p class="muted">Brand Management now oversees former Guardian customers who escalated complaints due to changes in their membership status, ensuring dedicated follow-up and higher retention.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h2 style="margin-bottom: 24px;">Customer Success Revamp</h2>
+      <div class="grid three">
+        <div class="card reveal">
+          <h3>🔍 Different Route</h3>
+          <p class="muted">Customer Success agents now call every customer after their claims are completed, capturing fresh insights on their experience.</p>
         </div>
         <div class="card reveal">
-          <h3>📣 Transparent Comms</h3>
-          <p class="muted">Proactive updates, improved templates, and a public FAQ that stays updated.</p>
+          <h3>🧠 App Surveys</h3>
+          <p class="muted">In-app surveys are now analyzed with deeper context, allowing us to uncover the “why” behind customer satisfaction and dissatisfaction.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🛠️ Review Verification</h3>
+          <p class="muted">Review verification was tightened, creating a stricter standard that eliminates discrepancies in the incentive program and ensures only valid reviews qualify.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🤝 Review Posting</h3>
+          <p class="muted">There is now a single point of accountability for review posting, minimizing errors and ensuring clean, audit-proof incentive tracking.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🛡️ Insights From Calls</h3>
+          <p class="muted">All insights from calls and surveys are routed back to Operations, driving targeted improvements in process and training.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- KEY WINS -->
+  <!-- KEY WINS / CHARTS -->
   <section id="wins" class="section">
     <div class="wrap">
+      <h2 style="margin-bottom: 24px;">Performance Metrics</h2>
       <div class="grid two">
-               
-        <!-- Monthly breakdown chart -->
         <div class="card reveal">
           <h2 style="margin:0 0 6px">2025 Monthly Breakdown</h2>
           <p class="muted">Received vs Removed reviews and removal rate %.</p>
-          <canvas id="monthlyChart" height="220" aria-label="Monthly chart"></canvas>
+          <div class="chart-container"><canvas id="monthlyChart" aria-label="Monthly chart"></canvas></div>
         </div>
-
-        <!-- Main Complaint by Month (stacked) -->
         <div class="card reveal">
-          <h2 style="margin:0 0 6px">Main Complaint Reasons by Month</h2>
+          <h2 style="margin:0 0 6px">Complaint Reasons by Month</h2>
           <p class="muted">Stacked by complaint category. Hover to compare months.</p>
-          <canvas id="complaintChart" height="260" aria-label="Complaint categories by month"></canvas>
+          <div class="chart-container"><canvas id="complaintChart" aria-label="Complaint categories by month"></canvas></div>
         </div>
 
-        <!-- Positive Reviews By Department -->
+        <!-- BBB Complaint Reduction -->
         <div class="card reveal">
-          <h2 style="margin:0 0 6px">Positive Reviews By Department</h2>
-          <p class="muted">Stacked by deparment reviews. Hover to compare months.</p>
-          <canvas id="reviewChart" height="260" aria-label="Complaint categories by month"></canvas>
+          <h2 style="margin:0 0 6px">📉 BBB Complaint Reduction</h2>
+          <div class="grid three" style="margin-top:10px; text-align:center;">
+            <div style="background:#fef9c3; color:#854d0e; border:1px solid #fde68a; border-radius:16px; padding:16px; font-weight:600;">
+              <div style="font-size:28px; font-weight:800;">351</div>
+              <div>Complaints</div>
+              <div style="font-size:12px; color:#6b7280; margin-top:4px;">Jan–Jul 2024</div>
+            </div>
+            <div style="background:#dcfce7; color:#065f46; border:1px solid #bbf7d0; border-radius:16px; padding:16px; font-weight:600;">
+              <div style="font-size:28px; font-weight:800;">218</div>
+              <div>Complaints</div>
+              <div style="font-size:12px; color:#6b7280; margin-top:4px;">Jan–Jul 2025</div>
+            </div>
+            <div style="background:#dbeafe; color:#1e3a8a; border:1px solid #bfdbfe; border-radius:16px; padding:16px; font-weight:600;">
+              <div style="font-size:28px; font-weight:800;">−38%</div>
+              <div>Reduction</div>
+              <div style="font-size:12px; color:#6b7280; margin-top:4px;">Year over Year</div>
+            </div>
+          </div>
+          <div class="muted" style="font-size:14px; margin-top:10px;">
+            This significant drop is the direct result of two major improvements:
+            <ul style="margin-top:8px; padding-left:18px;">
+              <li>Preventative handling strategies across support and success teams.</li>
+              <li>Launch of our Internal Complaints process, resolving issues before they escalate externally.</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+
+        
+
+      <div class="section-divider"><span>Positive Achievements</span></div>
+
+      <div class="grid two">
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">Customer Success: What Changed</h2>
+          <div class="grid two" style="margin-top:10px">
+            <div class="badge2">Started calling customers proactively to capture firsthand feedback on their experience.</div>
+            <div class="badge2">Now analyzing in-app survey responses to understand the “why” behind satisfaction and pain points.</div>
+            <div class="badge2">Tightened review verification to prevent discrepancies in the incentive program.</div>
+          </div>
+        </div>
+        
+        <!-- Positive Reviews by Department (chart) -->
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">Positive Reviews by Department</h2>
+          <p class="muted">Jan–Jul 2025, stacked by department.</p>
+          <div class="chart-container"><canvas id="reviewChart" aria-label="Positive reviews by department"></canvas></div>
+        </div>
+
+        <!-- Positive Reviews by Month (pills) -->
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">📊 Positive Reviews by Month</h2>
+          <p class="muted">Seven pill-shaped rows, one per month.</p>
+          <div class="pill-list" aria-label="Positive Reviews by Month">
+            <div class="pill-row tier-pink"><span class="month">January</span><span class="count">634</span></div>
+            <div class="pill-row tier-lime"><span class="month">February</span><span class="count">824</span></div>
+            <div class="pill-row tier-gold"><span class="month">March</span><span class="count">940</span></div>
+            <div class="pill-row tier-amber"><span class="month">April</span><span class="count">1,209</span></div>
+            <div class="pill-row tier-lightgreen"><span class="month">May</span><span class="count">1,353</span></div>
+            <div class="pill-row tier-green"><span class="month">June</span><span class="count">1,542</span></div>
+            <div class="pill-row tier-pink"><span class="month">July</span><span class="count">1,248</span></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISONS TABLE -->
+  <section id="compare" class="section">
+    <div class="wrap">
+      <div class="card reveal table-card">
+        <h2 style="margin:0 0 6px">Jan → Jul 2025 Ratings Comparison</h2>
+        <p class="muted">How our star ratings moved from January to July (higher is better).</p>
+        <div class="table-controls">
+          <input type="search" id="compareSearch" placeholder="Filter… (e.g., Google, App Store, Robbinsville)" />
+        </div>
+        <div class="table-wrap">
+          <table id="compareTable" aria-label="January vs July 2025 star ratings">
+            <thead>
+              <tr>
+                <th data-key="platform">Platform / Region <span class="sort-indicator">⇅</span></th>
+                <th class="num" data-key="before">Jan 2025 <span class="sort-indicator">⇅</span></th>
+                <th class="num" data-key="now">Jul 2025 <span class="sort-indicator">⇅</span></th>
+                <th class="num" data-key="delta">Δ Change <span class="sort-indicator">⇅</span></th>
+              </tr>
+            </thead>
+            <tbody><!-- rows injected by JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORMS & RATINGS TABLE -->
+  <section id="platforms" class="section">
+    <div class="wrap">
+      <div class="card reveal table-card">
+        <h2 style="margin:0 0 6px">Platforms & Ratings</h2>
+        <p class="muted">Sortable and filterable overview of platform star ratings and review counts.</p>
+        <div class="table-controls">
+          <input type="search" id="platformSearch" placeholder="Filter platforms… (e.g., Google, Trustpilot, Maryland)" />
+        </div>
+        <div class="table-wrap">
+          <table id="platformsTable" aria-label="Platforms and star ratings">
+            <thead>
+              <tr>
+                <th data-key="platform">Platform <span class="sort-indicator">⇅</span></th>
+                <th data-key="stars">Star Rating <span class="sort-indicator">⇅</span></th>
+                <th class="num" data-key="count">Count <span class="sort-indicator">⇅</span></th>
+              </tr>
+            </thead>
+            <tbody><!-- rows injected by JS --></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -289,330 +667,66 @@
     <div class="wrap grid two">
       <div class="card reveal">
         <h2 style="margin:0 0 6px">Next Up · 6-Month Goals</h2>
-        <ul style="margin-top:8px">
-          <li>Raise Google & Sitejabber to <b>4.5★</b> average.</li>
-          <li>Cut review-to-response time to <b>&lt; 4 hours</b>.</li>
-          <li>Launch monthly complaint-to-resolution report to Execs.</li>
-        </ul>
-        <div style="margin-top:12px">
-          <div class="muted" style="margin:10px 0 6px">Google Avg. ★ target (4.5)</div>
-          <div class="progress"><div class="bar" data-width="78"></div></div>
-          <div class="muted" style="margin:12px 0 6px">Response time target (&lt; 4h)</div>
-          <div class="progress"><div class="bar" data-width="68"></div></div>
-          <div class="muted" style="margin:12px 0 6px">Executive reporting maturity</div>
-          <div class="progress"><div class="bar" data-width="55"></div></div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <h2 style="margin:0 0 6px">Shout-outs</h2>
-        <p class="muted">Team wins are team wins. Call out your top contributors here.</p>
-        <ul>
-          <li><b>Eddy</b> – VIP case triage & policy math clarity.</li>
-          <li><b>Anthony</b> – Templates & Tier 2 coaching.</li>
-          <li><b>Ivette</b> – First review removal + steady cadence.</li>
+        <ul style="padding-left:18px">
+          <li><b>Raise Consumer Affairs rating to 4.5★</b><p class="muted">We’re aiming for sustained improvement to unlock premium visibility on their site and ensure we’re featured in articles that AI tools frequently cite — these drive high-intent lead traffic.</p></li>
+          <li><b>Prepare for BBB re-evaluation </b><p class="muted">Our current grade is a D-, but with recent complaint volume reductions and a cleaner record, we expect a significant upgrade in the next round of BBB evaluation.</p></li>
+          <li><b>Boost BBB reviews with a new incentive push </b><p class="muted">A special incentive will be launched soon, specifically for BBB. Our goal is to maintain a steady <b>4.5★ average rating</b> and increase volume of verified reviews.</p></li>
+          <li><b>Drive full-team participation in the incentive program</b><p class="muted">With more frequent reminders and quick check-ins with TLs, we expect broader participation from all departments.</p></li>
+          <li><b>Launch customer referral incentive for GCS </b><p class="muted">We’ll be rolling out a new <b>Customer referral incentive program</b> for the GCS team. This will drive lead generation while rewarding agents for proactive customer engagement.</p></li>
+          <li><b>Reduce complaint resolution time by 20%</b><p class="muted">Once our Brand Management complaint handling module goes live, we’ll leverage automation and smart routing to cut resolution time by at least 20%. </p></li>
         </ul>
       </div>
     </div>
+  </section>
 
-</section>
+  <footer>
+    <div class="wrap">
+      <p class="muted">Data reflects performance from January 1, 2025 to August 1, 2025</p>
+    </div>
+  </footer>
 
-    <script>
-    // ===== Smooth "reveal on scroll" using IntersectionObserver
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+    if (currentTheme === 'dark') { document.body.classList.add('dark-mode'); themeToggle.textContent = '☀️'; } else { themeToggle.textContent = '🌙'; }
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Reveal on scroll
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
-      })
-    }, {rootMargin: '0px 0px -10% 0px', threshold:.08});
-
+        if(e.isIntersecting){
+          e.target.classList.add('show');
+          if(e.target.querySelector('.value')) e.target.querySelectorAll('.value').forEach(animateCount);
+          if(e.target.querySelector('.bar')) e.target.querySelectorAll('.bar').forEach(b=>{ b.style.width = b.dataset.width + '%'; });
+          io.unobserve(e.target);
+        }
+      });
+    }, {rootMargin:'0px 0px -10% 0px', threshold:.05});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // ===== Animated counters for KPI numbers
+    // KPI counters
     function animateCount(el){
       const target = parseFloat(el.dataset.count);
       const isFloat = !Number.isInteger(target);
-      const duration = 1200;
+      const duration = 1500;
       const start = performance.now();
       function frame(now){
         const p = Math.min(1, (now - start)/duration);
-        const val = target * (0.5 - Math.cos(Math.PI*p)/2); // easeInOut
+        const val = target * (0.5 - Math.cos(Math.PI * p) / 2);
         el.textContent = isFloat ? val.toFixed(1) : Math.round(val);
         if(p < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
     }
-    document.querySelectorAll('.num').forEach(animateCount);
 
-    // ===== Progress bars fill when in view
-    const barIO = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.style.width = e.target.dataset.width + '%'; barIO.unobserve(e.target); }
-      })
-    }, {threshold:.3});
-    document.querySelectorAll('.bar').forEach(b=>barIO.observe(b));
-
-    // ===== Charts (Chart.js via CDN)
-    const ratingCtx = document.getElementById('ratingChart');
-    if(ratingCtx){
-      new Chart(ratingCtx, {
-        type:'line',
-        data:{
-          labels:['Q1','Q2','Q3','Q4'],
-          datasets:[{
-            label:'Average Rating',
-            data:[3.7, 4.0, 4.2, 4.4],
-            borderWidth:3,
-            tension:.4,
-            fill:true,
-            backgroundColor:'rgba(37,99,235,.12)',
-            borderColor:'rgba(37,99,235,1)',
-            pointRadius:3
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{legend:{display:false}},
-          scales:{y:{suggestedMin:3, suggestedMax:5, ticks:{stepSize:.2}}}
-        }
-      });
-    }
-
-    const removalCtx = document.getElementById('removalChart');
-    if(removalCtx){
-      new Chart(removalCtx, {
-        type:'bar',
-        data:{
-          labels:['Q1','Q2','Q3','Q4'],
-          datasets:[{
-            label:'Removals',
-            data:[52, 71, 88, 101],
-            borderWidth:0,
-            backgroundColor:['rgba(37,99,235,.85)','rgba(99,102,241,.85)','rgba(59,130,246,.85)','rgba(14,165,233,.85)']
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{legend:{display:false}},
-          scales:{y:{beginAtZero:true}}
-        }
-      });
-    }
-
-    // ===== 2025 Monthly dataset + chart (Received/Removed/%)
-    const monthlyData = {
-      labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul"],
-      received: [139,126,115,151,169,152,197],
-      removed:  [122, 96, 65, 76, 94,106,167],
-      percentages: [87.7,76.1,56.5,50.3,55.6,69.7,84.7]
-    };
-
-    const monthlyCtx = document.getElementById('monthlyChart');
-    if (monthlyCtx){
-      new Chart(monthlyCtx.getContext('2d'), {
-        data: {
-          labels: monthlyData.labels,
-          datasets: [
-            {
-              type: "bar",
-              label: "Received",
-              data: monthlyData.received,
-              backgroundColor: "rgba(239,68,68,.7)",
-              borderWidth: 0
-            },
-            {
-              type: "bar",
-              label: "Removed",
-              data: monthlyData.removed,
-              backgroundColor: "rgba(37,99,235,.7)",
-              borderWidth: 0
-            },
-            {
-              type: "line",
-              label: "Removal %",
-              data: monthlyData.percentages,
-              yAxisID: "y1",
-              borderColor: "#10b981",
-              pointBackgroundColor: "#10b981",
-              borderWidth: 2,
-              tension: 0.3,
-              fill: false
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: "index", intersect: false },
-          plugins: { legend: { display: true } },
-          scales: {
-            y: { beginAtZero: true, title: { display: true, text: "Reviews" } },
-            y1: {
-              position: "right",
-              min: 0,
-              max: 100,
-              ticks: { callback: v => v + "%" },
-              grid: { drawOnChartArea: false },
-              title: { display: true, text: "Removal %" }
-            }
-          }
-        }
-      });
-    }
-
-    // ===== Main Complaint by Month (stacked bar) — UPDATED WITH JAN–JUL
-    const complaintMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
-    const categories = [
-      "Low Contribution",
-      "Technician Delays",
-      "Misled During Sales Call",
-      "Labor Not Covered",
-      "Claim Delays",
-      "Coverage Denied",
-      "Parts/Unit Error",
-      "Poor Communication"
-    ];
-
-    // Exact counts per month (Jan..Jul 2025)
-    const complaintSeries = {
-      "Low Contribution":         [36, 32, 29, 22, 26, 39, 37],
-      "Technician Delays":        [13, 11, 15, 24, 24, 40, 62],
-      "Misled During Sales Call": [ 4,  4,  8, 13, 21, 23, 22],
-      "Labor Not Covered":        [ 8, 11,  2, 16, 14, 22, 33],
-      "Claim Delays":             [14, 15, 13, 22, 32, 78, 74],
-      "Coverage Denied":          [17,  3,  9, 26, 39,  7, 63],
-      "Parts/Unit Error":         [ 0,  2,  1,  0,  1,  0,  0],
-      "Poor Communication":       [ 0,  2,  2, 12, 37, 78, 95]
-    };
-
-    const palette = [
-      "rgba(37,99,235,.8)",   // blue
-      "rgba(99,102,241,.8)",  // indigo
-      "rgba(59,130,246,.8)",  // blue-500
-      "rgba(14,165,233,.8)",  // sky
-      "rgba(239,68,68,.8)",   // red
-      "rgba(234,88,12,.8)",   // orange
-      "rgba(16,185,129,.8)",  // emerald
-      "rgba(139,92,246,.8)"   // violet
-    ];
-
-    const complaintDatasets = categories.map((cat, i) => ({
-      label: cat,
-      data: complaintSeries[cat],
-      backgroundColor: palette[i],
-      borderWidth: 0,
-      stack: "complaints"
-    }));
-
-    const complaintCtx = document.getElementById('complaintChart');
-    if (complaintCtx){
-      new Chart(complaintCtx.getContext('2d'), {
-        type: "bar",
-        data: {
-          labels: complaintMonths,
-          datasets: complaintDatasets
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { position: "bottom" },
-            tooltip: {
-              callbacks: {
-                footer: (items) => {
-                  const sum = items.reduce((a, it) => a + it.parsed.y, 0);
-                  return "Total: " + sum;
-                }
-              }
-            }
-          },
-          scales: {
-            x: { stacked: true },
-            y: { stacked: true, beginAtZero: true, title: { display: true, text: "Count" } }
-          }
-        }
-      });
-    }
-
-    // ===== Main Reviews by Department (stacked bar) — UPDATED WITH JAN–JUL
-    const ReviewsMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
-    const categories2 = [
-      "Dispatch",
-      "Authorizations",
-      "Vendors Relations",
-      "Retentions",
-      "Sales",
-      "Billing",
-      "GCS",
-      "VIP",
-      "Resolutions",
-      "General"
-    ];
-
-    // Exact counts per month (Jan..Jul 2025)
-    const ReviewsSeries = {
-      "Dispatch":         [59, 5, 46, 234, 302, 336, 225],
-      "Authorizations":        [36, 147, 185, 218, 208, 241, 124],
-      "Vendors Relations": [96, 179, 174, 224, 341, 283, 300],
-      "Retentions":        [1, 7, 16, 5, 7, 3, 10],
-      "Sales":             [7, 11, 8, 11, 27, 43, 49],
-      "Billing":          [2, 2, 14, 11, 10, 4, 3],
-      "GCS":         [43, 117, 164, 167, 165, 156, 158],
-      "VIP":       [5, 14, 2, 45, 33, 7, 1],
-      "Resolutions":       [11, 16, 33, 53, 66, 8, 12],
-      "General":       [226, 210, 282, 231, 219, 240, 357]
-    };
-
-    const palette2 = [
-      "rgba(37,99,235,.8)",   // blue
-      "rgba(99,102,241,.8)",  // indigo
-      "rgba(59,130,246,.8)",  // blue-500
-      "rgba(14,165,233,.8)",  // sky
-      "rgba(239,68,68,.8)",   // red
-      "rgba(234,88,12,.8)",   // orange
-      "rgba(16,185,129,.8)",  // emerald
-      "rgba(139,92,246,.8)"   // violet
-    ];
-
-    const reviewDatasets = categories2.map((cat1, i) => ({
-      label: cat1,
-      data: ReviewsSeries[cat1],
-      backgroundColor: palette2[i],
-      borderWidth: 0,
-      stack: "reviews"
-    }));
-
-    const reviewCtx = document.getElementById('reviewChart');
-    if (reviewCtx){
-      new Chart(reviewCtx.getContext('2d'), {
-        type: "bar",
-        data: {
-          labels: ReviewsSeries,
-          datasets: reviewDatasets
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { position: "bottom" },
-            tooltip: {
-              callbacks: {
-                footer: (items) => {
-                  const sum = items.reduce((a, it) => a + it.parsed.y, 0);
-                  return "Total: " + sum;
-                }
-              }
-            }
-          },
-          scales: {
-            x: { stacked: true },
-            y: { stacked: true, beginAtZero: true, title: { display: true, text: "Count" } }
-          }
-        }
-      });
-    }
-
-
-
-
-    // ===== Highlight active nav link on scroll
+    // Active nav highlight
     const sections = [...document.querySelectorAll('section[id]')];
     const navLinks = [...document.querySelectorAll('.nav a')];
     const spy = new IntersectionObserver((entries)=>{
@@ -621,9 +735,300 @@
           const id = e.target.getAttribute('id');
           navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#' + id));
         }
-      })
-    }, {threshold:.4});
+      });
+    }, {threshold: 0.5});
     sections.forEach(s=>spy.observe(s));
+
+    // Charts
+    const monthlyData = {
+      labels:["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+      received:[139,126,115,151,169,152,197],
+      removed:[122,96,65,76,94,106,167],
+      percentages:[87.7,76.1,56.5,50.3,55.6,69.7,84.7]
+    };
+    const monthlyCtx = document.getElementById('monthlyChart');
+    if (monthlyCtx){
+      new Chart(monthlyCtx, {
+        type:'bar',
+        data:{
+          labels: monthlyData.labels,
+          datasets:[
+            { label:'Received', data:monthlyData.received, backgroundColor:'rgba(239,68,68,0.7)', borderColor:'rgba(239,68,68,1)', borderWidth:1, barPercentage:0.6, categoryPercentage:0.7 },
+            { label:'Removed',  data:monthlyData.removed,  backgroundColor:'rgba(37,99,235,0.7)', borderColor:'rgba(37,99,235,1)', borderWidth:1, barPercentage:0.6, categoryPercentage:0.7 }
+          ]
+        },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{position:'top'}, tooltip:{mode:'index', intersect:false} },
+          scales:{ y:{ beginAtZero:true, title:{display:true, text:'Number of Reviews'} }, x:{ grid:{display:false} } }
+        }
+      });
+    }
+
+    // Complaint Reasons by Month
+    const complaintMonths = ["May","Jun","Jul"];
+    const categories = [
+      "Low Contribution","Technician Delays","Misled During Sales Call","Labor Not Covered",
+      "Claim Delays","Coverage Denied","Parts/Unit Error","Poor Communication"
+    ];
+    const complaintSeries = {
+      "Low Contribution":[26,39,37],
+      "Technician Delays":[24,40,62],
+      "Misled During Sales Call":[21,23,22],
+      "Labor Not Covered":[14,22,33],
+      "Claim Delays":[32,78,74],
+      "Coverage Denied":[39,7,63],
+      "Parts/Unit Error":[1,0,0],
+      "Poor Communication":[37,78,95]
+    };
+    const palette = ["rgba(37,99,235,.8)","rgba(99,102,241,.8)","rgba(59,130,246,.8)","rgba(14,165,233,.8)","rgba(239,68,68,.8)","rgba(234,88,12,.8)","rgba(16,185,129,.8)","rgba(139,92,246,.8)"];
+    const complaintDatasets = categories.map((cat,i)=>({ label:cat, data:complaintSeries[cat], backgroundColor:palette[i], borderWidth:0, stack:"complaints" }));
+    const complaintCtx = document.getElementById('complaintChart');
+    if(complaintCtx){
+      new Chart(complaintCtx,{
+        type:"bar",
+        data:{ labels: complaintMonths, datasets: complaintDatasets },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{position:"bottom"}, tooltip:{ callbacks:{ footer:(items)=>"Total: " + items.reduce((a,it)=>a+it.parsed.y,0) } } },
+          scales:{ x:{stacked:true}, y:{stacked:true, beginAtZero:true, title:{display:true, text:"Count"}} }
+        }
+      });
+    }
+
+    // Positive Reviews by Department (Jan–Jul)
+    const ReviewsMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+    const categories2 = ["Dispatch","Authorizations","Vendors Relations","Retentions","Sales","Billing","GCS","VIP","Resolutions","General"];
+    const ReviewsSeries = {
+      "Dispatch":[59,5,46,234,302,336,225],
+      "Authorizations":[36,147,185,218,208,241,124],
+      "Vendors Relations":[96,179,174,224,341,283,300],
+      "Retentions":[1,7,16,5,7,3,10],
+      "Sales":[7,11,8,11,27,43,49],
+      "Billing":[2,2,14,11,10,4,3],
+      "GCS":[43,117,164,167,165,156,158],
+      "VIP":[5,14,2,45,33,7,1],
+      "Resolutions":[11,16,33,53,66,8,12],
+      "General":[226,210,282,231,219,240,357]
+    };
+    const palette2 = ["rgba(37,99,235,.8)","rgba(99,102,241,.8)","rgba(59,130,246,.8)","rgba(14,165,233,.8)","rgba(239,68,68,.8)","rgba(234,88,12,.8)","rgba(16,185,129,.8)","rgba(139,92,246,.8)","rgba(245,158,11,.8)","rgba(20,184,166,.8)"];
+    const reviewDatasets = categories2.map((cat,i)=>({ label:cat, data:ReviewsSeries[cat], backgroundColor:palette2[i], borderWidth:0, stack:"reviews" }));
+    const reviewCtx = document.getElementById('reviewChart');
+    if(reviewCtx){
+      new Chart(reviewCtx,{
+        type:"bar",
+        data:{ labels: ReviewsMonths, datasets: reviewDatasets },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{position:"bottom"}, tooltip:{ callbacks:{ footer:(items)=>"Total: " + items.reduce((a,it)=>a+it.parsed.y,0) } } },
+          scales:{ x:{stacked:true}, y:{stacked:true, beginAtZero:true, title:{display:true, text:"Count"}} }
+        }
+      });
+    }
+
+    // Platforms table data
+    const platformsData = [
+      { platform:"LHG Home Warranty South Carolina", stars:5.00, count:78 },
+      { platform:"LHG Home Warranty AZ", stars:5.00, count:145 },
+      { platform:"Reseller Ratings", stars:5.00, count:534 },
+      { platform:"Best Company", stars:4.90, count:764 },
+      { platform:"LHG Home Warranty Washington", stars:4.90, count:93 },
+      { platform:"LHG Home Warranty Minnesota", stars:4.90, count:193 },
+      { platform:"LHG Home Warranty Virginia", stars:4.90, count:105 },
+      { platform:"Liberty Home Guard Home Warranty Robbinsville", stars:4.90, count:198 },
+      { platform:"Liberty Home Guard Home Warranty Maryland", stars:4.80, count:667 },
+      { platform:"Liberty Home Guard Home Warranty PA", stars:4.70, count:110 },
+      { platform:"Liberty Home Guard Home Warranty NJ", stars:4.70, count:239 },
+      { platform:"Google Main LHG", stars:4.70, count:15983 },
+      { platform:"Trustpilot", stars:4.60, count:5664 },
+      { platform:"LHG Home Warranty Georgia", stars:4.60, count:165 },
+      { platform:"Consumer's Advocate", stars:4.50, count:364 },
+      { platform:"Liberty Home Guard Home Warranty CA", stars:4.40, count:190 },
+      { platform:"Liberty Home Guard Home Warranty FL", stars:4.40, count:180 },
+      { platform:"Liberty Home Guard Home Warranty NC", stars:4.30, count:127 },
+      { platform:"Retierement living", stars:4.30, count:11 },
+      { platform:"BBB Review", stars:4.18, count:1668 },
+      { platform:"Liberty Home Guard Home Warranty NV", stars:4.10, count:237 },
+      { platform:"Consumer Affairs", stars:4.10, count:1112 },
+      { platform:"Play Store LHG", stars:4.10, count:89 },
+      { platform:"Business Consumer Alliance", stars:4.00, count:14 },
+      { platform:"App Store LHG", stars:4.00, count:137 },
+      { platform:"LHG Home Warranty Arizona", stars:4.00, count:261 }
+    ];
+
+    // Platforms table render/sort/filter
+    const tbody = document.querySelector('#platformsTable tbody');
+    const searchInput = document.getElementById('platformSearch');
+    const headers = Array.from(document.querySelectorAll('#platformsTable thead th'));
+    let currentRows = [...platformsData];
+    let sortState = { key: null, dir: 1 };
+    function fmtStars(x){ return x.toFixed(2); }
+    function fmtCount(x){ return x.toLocaleString('en-US'); }
+    function renderTable(rows){
+      tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.platform}</td>
+          <td><span class="pill-rating">${fmtStars(r.stars)} ★</span></td>
+          <td class="num">${fmtCount(r.count)}</td>
+        </tr>
+      `).join('');
+    }
+    function sortBy(key){
+      const isNumeric = key !== 'platform';
+      if (sortState.key === key) sortState.dir *= -1; else { sortState.key = key; sortState.dir = 1; }
+      currentRows.sort((a,b)=>{
+        const va = a[key], vb = b[key];
+        if (isNumeric) return (va - vb) * sortState.dir;
+        return va.localeCompare(vb) * sortState.dir;
+      });
+      renderTable(currentRows);
+    }
+    headers.forEach(th=>{
+      th.addEventListener('click', ()=>{
+        const key = th.dataset.key;
+        sortBy(key);
+      });
+    });
+    searchInput.addEventListener('input', ()=>{
+      const q = searchInput.value.trim().toLowerCase();
+      currentRows = platformsData.filter(r =>
+        r.platform.toLowerCase().includes(q) ||
+        String(r.stars).includes(q) ||
+        String(r.count).includes(q)
+      );
+      if (sortState.key) {
+        const key = sortState.key;
+        const dir = sortState.dir;
+        const isNumeric = key !== 'platform';
+        currentRows.sort((a,b)=>{
+          const va = a[key], vb = b[key];
+          return isNumeric ? (va - vb) * dir : va.localeCompare(vb) * dir;
+        });
+      }
+      renderTable(currentRows);
+    });
+    renderTable(currentRows);
+
+    // Comparison table
+    const compareData = [
+      { platform: "Robbinsville Google",    before: 3.2, now: 4.9 },
+      { platform: "California Google",      before: 3.0, now: 4.4 },
+      { platform: "South Carolina Google",  before: 3.3, now: 5.0 },
+      { platform: "Arizona Google",         before: 3.5, now: 4.0 },
+      { platform: "Best Company",           before: 4.0, now: 4.9 },
+      { platform: "Google Play Store",      before: 2.9, now: 4.1 },
+      { platform: "Apple App Store",        before: 3.0, now: 4.1 },
+      { platform: "Consumer Affairs",       before: 2.9, now: 4.1 }
+    ];
+    const cmpTbody   = document.querySelector('#compareTable tbody');
+    const cmpSearch  = document.getElementById('compareSearch');
+    const cmpHeaders = Array.from(document.querySelectorAll('#compareTable thead th'));
+    let cmpRows = compareData.map(r => ({ ...r, delta: +(r.now - r.before).toFixed(1) }));
+    let cmpSort = { key: null, dir: 1 };
+    function stars(x){ return x.toFixed(1) + ' ★'; }
+    function pillDelta(val){
+      const sign = val >= 0 ? '+' : '';
+      const cls  = val >= 0 ? '' : 'neg';
+      return `<span class="pill-rating ${cls}">${sign}${val.toFixed(1)}</span>`;
+    }
+    function renderCompare(rows){
+      cmpTbody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.platform}</td>
+          <td class="num">${stars(r.before)}</td>
+          <td class="num">${stars(r.now)}</td>
+          <td class="num">${pillDelta(r.delta)}</td>
+        </tr>
+      `).join('');
+    }
+    function sortCompare(key){
+      const isNumeric = key !== 'platform';
+      if (cmpSort.key === key) cmpSort.dir *= -1;
+      else { cmpSort.key = key; cmpSort.dir = 1; }
+      cmpRows.sort((a,b)=>{
+        const va = a[key], vb = b[key];
+        return isNumeric ? (va - vb) * cmpSort.dir : va.localeCompare(vb) * cmpSort.dir;
+      });
+      renderCompare(cmpRows);
+    }
+    cmpHeaders.forEach(th=>{
+      th.addEventListener('click', ()=> sortCompare(th.dataset.key));
+    });
+    cmpSearch.addEventListener('input', ()=>{
+      const q = cmpSearch.value.trim().toLowerCase();
+      cmpRows = compareData
+        .map(r => ({ ...r, delta: +(r.now - r.before).toFixed(1) }))
+        .filter(r =>
+          r.platform.toLowerCase().includes(q) ||
+          String(r.before).includes(q) ||
+          String(r.now).includes(q) ||
+          String(r.delta).includes(q)
+        );
+      if (cmpSort.key) sortCompare(cmpSort.key); else renderCompare(cmpRows);
+    });
+    renderCompare(cmpRows);
+
+    // Stagger 'Meet the Team' person chips
+    document.querySelectorAll('.team-wrap.reveal').forEach(section=>{
+      const people = section.querySelectorAll('.person');
+      people.forEach((el, i)=>{ el.style.transitionDelay = (80 * i) + 'ms'; });
+    });
+
+    // Animate progress bars on view (already handled in reveal observer)
+    const barIO = new IntersectionObserver((entries)=>{ 
+      entries.forEach(e=>{ 
+        if(e.isIntersecting){ 
+          e.target.style.width = e.target.dataset.width + '%'; 
+          barIO.unobserve(e.target); 
+        } 
+      }); 
+    }, {threshold:0.2});
+    document.querySelectorAll('.bar').forEach(b=>barIO.observe(b));
+
+    // Presentation Focus Mode
+    (function setupFocusMode(){
+      const focusables = [...document.querySelectorAll('.card, .kpi-card')];
+      const backdrop = document.createElement('div');
+      backdrop.className = 'focus-backdrop';
+      document.body.appendChild(backdrop);
+
+      let focusedEl = null;
+      function exitFocus(){
+        if(!focusedEl) return;
+        backdrop.classList.remove('show');
+        document.body.classList.remove('focus-mode');
+        focusedEl.classList.remove('focused');
+        const btn = focusedEl.querySelector('.focus-close'); if(btn) btn.remove();
+        focusedEl.removeEventListener('click', onFocusedClick);
+        focusedEl = null;
+      }
+      function onFocusedClick(e){
+        if(e.target.closest('a,button,input,textarea,select,label')) return;
+        exitFocus();
+      }
+      function enterFocus(el){
+        if(focusedEl) return;
+        focusedEl = el;
+        document.body.classList.add('focus-mode');
+        el.classList.add('focused');
+        backdrop.classList.add('show');
+        const btn = document.createElement('button');
+        btn.className = 'focus-close';
+        btn.textContent = '× ESC to exit';
+        btn.addEventListener('click', exitFocus);
+        el.prepend(btn);
+        el.addEventListener('click', onFocusedClick);
+      }
+      focusables.forEach(el=>{
+        el.addEventListener('click',(e)=>{
+          if(e.target.closest('a,button,input,textarea,select,label')) return;
+          if(el.classList.contains('focused')) { exitFocus(); }
+          else { enterFocus(el); }
+        });
+      });
+      backdrop.addEventListener('click', exitFocus);
+      window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') exitFocus(); });
+    })();
   </script>
 </body>
 </html>
