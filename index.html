@@ -1,633 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2025 Department Improvement</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brand Management – Year in Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      /* Easy theme tuning */
+      --primary:#2563eb; /* blue */
+      --accent:#ef4444;  /* red */
+      --mint:#10b981;    /* success */
+      --ink:#0b1220;     /* text dark */
+      --slate:#0f172a;   /* deep bg */
+      --bg:#f7f8fb;      /* page bg */
+      --card:#ffffff;    /* card bg */
+      --muted:#6b7280;   /* muted text */
+      --ring: 0 10px 25px rgba(37,99,235,.25);
+      --ring-accent: 0 10px 25px rgba(239,68,68,.2);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at -10% -20%, rgba(37,99,235,.08), transparent 50%),
+        radial-gradient(1200px 800px at 110% 120%, rgba(239,68,68,.08), transparent 50%),
+        var(--bg);
+      line-height:1.45;
+      scroll-behavior:smooth;
+    }
+
+    /* Top Nav */
+    .nav{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:rgba(255,255,255,.7);
+      border-bottom:1px solid rgba(15,23,42,.06);
+    }
+    .nav-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px}
+    .brand .logo{width:28px; height:28px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,var(--primary),#60a5fa); color:#fff; font-size:16px; box-shadow:var(--ring)}
+    .nav a{color:#1f2937; text-decoration:none; font-weight:600; padding:8px 12px; border-radius:10px}
+    .nav a:hover{background:#edf2ff}
+    .nav-links{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap}
+    .btn{display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; padding:12px 16px; border-radius:14px; font-weight:700}
+    .btn.primary{background:linear-gradient(135deg,var(--primary),#3b82f6); color:#fff; box-shadow:var(--ring)}
+    .btn.ghost{background:#ffffffc0; border:1px solid rgba(2,6,23,.08)}
+
+    /* Layout */
+    .section{padding:72px 20px}
+    .wrap{max-width:1200px; margin:0 auto}
+    .grid{display:grid; gap:20px}
+    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .four{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    /* Hero */
+    .hero{padding:110px 20px 72px}
+    .hero-card{
+      background:linear-gradient(180deg, #ffffff, #f6f9ff);
+      border:1px solid rgba(2,6,23,.06);
+      border-radius:24px; overflow:hidden; position:relative;
+      box-shadow:0 20px 60px rgba(2,6,23,.06);
+    }
+    .hero-body{padding:44px}
+    .eyebrow{display:inline-flex; gap:8px; align-items:center; padding:6px 10px; background:#eef2ff; border-radius:999px; color:#1d4ed8; font-weight:700; letter-spacing:.2px; margin-bottom:16px}
+    .title{font-size: clamp(28px, 6vw, 54px); line-height:1.05; margin:0 0 10px}
+    .lead{font-size: clamp(16px, 2.6vw, 20px); color:var(--muted); max-width:65ch}
+    .hero-footer{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px}
+    .hero-fig{position:absolute; inset:auto -60px -80px auto; width:min(520px,55vw); opacity:.9; filter:drop-shadow(0 30px 60px rgba(2,6,23,.25))}
+    .hero-fig svg{display:block}
+
+    /* Cards */
+    .card{
+      background:var(--card);
+      border:1px solid rgba(2,6,23,.06);
+      border-radius:var(--radius);
+      box-shadow:0 20px 50px rgba(2,6,23,.05);
+      padding:22px;
+    }
+    .card h3{margin:0 0 8px}
+    .muted{color:var(--muted)}
+
+    /* KPI */
+    .kpi{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
+    .kpi .num{font-size:40px; font-weight:900}
+    .kpi b{font-size:14px; color:var(--muted)}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; background:#ecfeff; border:1px solid #cffafe; color:#0e7490; border-radius:999px; font-weight:700}
+
+    /* Timeline */
+    .timeline{position:relative; padding-left:28px}
+    .timeline:before{content:""; position:absolute; left:12px; top:0; bottom:0; width:4px; border-radius:4px; background:linear-gradient(var(--primary), var(--accent))}
+    .tl-item{position:relative; margin:0 0 18px}
+    .tl-item:before{content:""; position:absolute; left:-22px; top:6px; width:16px; height:16px; border-radius:50%; background:#fff; border:4px solid var(--primary); box-shadow:0 4px 10px rgba(2,6,23,.15)}
+
+    /* Progress Bars */
+    .progress{height:10px; background:#eef2ff; border-radius:999px; overflow:hidden}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#60a5fa); border-radius:inherit; transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+
+    /* List badges */
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; background:#fff1f2; border:1px solid #ffe4e6; color:#be123c; border-radius:12px; font-weight:700}
+
+    /* Footer */
+    footer{padding:40px 20px; color:var(--muted)}
+
+    /* Reveal Animations (Canva-like) */
+    .reveal{opacity:0; transform:translateY(16px) scale(.98); filter:blur(2px);}
+    .reveal.show{opacity:1; transform:none; filter:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease}
+
+    /* Print (export to PDF) */
+    @media print{
+      .nav,.hero-fig,.hero-footer .btn{display:none !important}
+      .section{padding:24px 0}
+      body{background:#fff}
+      .card{box-shadow:none}
+    }
+  </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h2>2025</h2>
-      <p>Department Dashboard</p>
-    </div>
-<nav>
-  <a href="#welcome"><i class="fas fa-home"></i> Welcome</a>
-  <a href="#team"><i class="fas fa-address-book"></i> Team Growth</a>
-  <a href="#team-complaints"><i class="fas fa-user-shield"></i> Complaints Team</a>
-  <a href="#team-success"><i class="fas fa-trophy"></i> Success Team</a>
-  <a href="#changes"><i class="fas fa-sync-alt"></i> Updates</a>
-  <a href="#enhancements"><i class="fas fa-rocket"></i> Infrastructure Enhancements</a>
-  <a href="#reddit"><i class="fas fa-ad"></i> Reddit</a>
-  <a href="#stats-positive"><i class="fas fa-chart-line"></i> Stats – Positive</a>
-  <a href="#stats-negative"><i class="fas fa-chart-area"></i> Stats – Negative</a>
-  <a href="#bbb"><i class="fas fa-ad"></i> BBB</a>
-</nav>
-
-  </div>
-
-  <main>
-    <!-- Welcome Section -->
-    <section id="welcome" class="card fade-in">
-  <div class="card-header hero-header">
-    <h2><i class="fas fa-star"></i> Performance Evaluation: <span>Brand Management Department</span></h2>
-    <p class="subheader">2025 Annual Review & Strategic Impact Summary</p>
-  </div>
-  <div class="card-body">
-    <p>
-      Welcome to the 2025 Brand Management Performance Evaluation.
-    </p>
-    <p>
-      This year marked a period of measurable progress, innovation, and strategic development within the Brand Management team. From resolving high-priority customer complaints to elevating customer satisfaction and strengthening internal operations, each function within the department played a critical role in driving results.
-    </p>
-    <p>
-      The following sections outline the department structure, key individual contributions, major system enhancements, performance data.
-    </p>
-  </div>
-</section>
-
-<!-- Departmental Growth Summary -->
-<section class="card fade-in">
-  <div class="card-header">
-    <h2><i class="fas fa-users-cog"></i> Team Growth</h2>
-  </div>
-  <div class="card-body">
-    <p>
-      <strong>Agent headcount grew from 8 in 2024 to 14 by July 2025</strong> — representing a <span style="color: green; font-weight: bold;">75% growth</span> in staffing.
-    </p>
-  </div>
-</section>
-
-
-    <!-- Complaints Team -->
-    <section id="team-complaints" class="card fade-in">
-      <div class="card-header">
-        <h2><i class="fas fa-user-shield"></i> Complaints Team</h2>
-        <p class="subtitle">Hover over cards to see details</p>
+  <!-- Sticky Top Navigation -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">BM</div>
+        <div>Brand Management · Year in Review</div>
       </div>
-      <div class="card-body">
-        <div class="flip-grid">
+      <nav class="nav-links">
+        <a href="#highlights">Highlights</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#initiatives">Initiatives</a>
+        <a href="#wins">Key Wins</a>
+        <a href="#goals">Goals</a>
+      </nav>
+      <button class="btn ghost" onclick="window.print()" title="Export to PDF">🖨️ Export</button>
+    </div>
+  </header>
 
-            <!-- Azhani -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Azhani Payton</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-check-circle"></i> Brand New</p>
-              </div>
-              <div class="flip-back">
-                <h3>Azhani Payton</h3>
-                <p>Brand new agent. Currently undergoing GCS Training</p>
-              </div>
-            </div>
-          </div>
-            
-          <!-- Jackie -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Jackie Flores</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-check-circle"></i> 5 Removals First Week</p>
-              </div>
-              <div class="flip-back">
-                <h3>Jackie Flores</h3>
-                <p>Brand new agent with fast adaptation in the Complaint Section. Strong execution and potential from day one.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Emi -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Emi Estrella</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-check-circle"></i> 5 Removals First Week</p>
-              </div>
-              <div class="flip-back">
-                <h3>Emi Estrella</h3>
-                <p>Joined with immediate impact. Matches Jackie in output and excels in team adaptability.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Nigel -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Nigel Liloy</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-check-circle"></i> 10 Removals First Week</p>
-              </div>
-              <div class="flip-back">
-                <h3>Nigel Liloy</h3>
-                <p>Top T1 performer out the gate. High-volume handling and promising accuracy rate.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Josh -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Josh Kim</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-check-circle"></i> 10 Removals | CA Specialist</p>
-              </div>
-              <div class="flip-back">
-                <h3>Josh Kim</h3>
-                <p>Focused on Consumer Affairs. Key contributor to rating increase and escalated response success.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Alex -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Alex Collado</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-chart-line"></i> +100% Improvement</p>
-              </div>
-              <div class="flip-back">
-                <h3>Alex Collado</h3>
-                <p>Veteran agent showing massive growth in Q1. Led complaint reversals across multiple platforms.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Eddy -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-2">
-                <h3>Eddy Sanchez</h3>
-                <p class="role">Tier 2 – Support</p>
-                <p><i class="fas fa-tasks"></i> 1000+ Approaches</p>
-              </div>
-              <div class="flip-back">
-                <h3>Eddy Sanchez</h3>
-                <p>Master of escalated case strategies. Leads with detail, builds automations, improves review velocity.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mike -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-2">
-                <h3>Mike Rodriguez</h3>
-                <p class="role">Tier 2 – Ops Specialist</p>
-                <p><i class="fas fa-graduation-cap"></i> Data Analyst</p>
-              </div>
-              <div class="flip-back">
-                <h3>Mike Rodriguez</h3>
-                <p>Trusted floor support and go-to resource for KPI analysis and case strategy - Works along with Eddy in automation and improvements.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Anthony -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-2">
-                <h3>Anthony Smith</h3>
-                <p class="role">Tier 2 – Coach</p>
-                <p><i class="fas fa-database"></i> Coach | PSP Expert</p>
-              </div>
-              <div class="flip-back">
-                <h3>Anthony Smith</h3>
-                <p>Leads training for Tier 1s. BBB and CEO specialist. PSP tactics = unmatched.</p>
-              </div>
-            </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-card reveal show">
+        <img class="hero-fig" alt="decorative chart" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>
+          <svg xmlns='http://www.w3.org/2000/svg' width='820' height='420' viewBox='0 0 820 420'>
+            <defs>
+              <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+                <stop stop-color='%232563eb' offset='0'/>
+                <stop stop-color='%2360a5fa' offset='1'/>
+              </linearGradient>
+              <filter id='s' x='-20%' y='-20%' width='140%' height='140%'>
+                <feDropShadow dx='0' dy='18' stdDeviation='20' flood-opacity='.2'/>
+              </filter>
+            </defs>
+            <rect width='820' height='420' rx='28' fill='white'/>
+            <g filter='url(%23s)'>
+              <path d='M40 320 L140 280 L240 290 L340 240 L440 260 L540 200 L640 220 L740 160' stroke='url(%23g)' stroke-width='10' fill='none' />
+            </g>
+            <g fill='%23d1d5db'>
+              <rect x='80' y='340' width='40' height='20' rx='6'/>
+              <rect x='140' y='340' width='60' height='20' rx='6'/>
+              <rect x='260' y='340' width='90' height='20' rx='6'/>
+            </g>
+          </svg>"/>
+        <div class="hero-body">
+          <div class="eyebrow">🚀 Team Leadership Meeting · 2025</div>
+          <h1 class="title">Brand Management</h1>
+          <div class="hero-footer">
+            <a class="btn primary" href="#highlights">View Highlights ↓</a>
+            <a class="btn ghost" href="#timeline">Jump to Timeline</a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Success Team -->
-    <section id="team-success" class="card fade-in">
-      <div class="card-header">
-        <h2><i class="fas fa-trophy"></i> Success Team</h2>
-        <p class="subtitle">Hover over cards to see details</p>
-      </div>
-      <div class="card-body">
-        <div class="flip-grid">
-          <!-- Nathan -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Nathan Jones</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-comments"></i> Strong Communicator</p>
-              </div>
-              <div class="flip-back">
-                <h3>Nathan Jones</h3>
-                <p>Motivates Ops Teams to drive positive reviews.</p>
-              </div>
-            </div>
+  <!-- HIGHLIGHTS / KPIs -->
+  
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="section">
+    <div class="wrap grid two">
+      <div class="card reveal">
+        <h2 style="margin:0 0 8px">Milestone Timeline</h2>
+        <p class="muted">What shipped, when it shipped, and why it mattered.</p>
+        <div class="timeline" style="margin-top:16px">
+          <div class="tl-item">
+            <h3>Q1 · VIP Guardians program launched</h3>
+            <p class="muted">Assigned handlers to high-visibility accounts; ensured smooth claim processing end-to-end.</p>
           </div>
-
-          <!-- Lorraine -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Lorraine Jackson</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-clock"></i> 3+ Years at LHG</p>
-              </div>
-              <div class="flip-back">
-                <h3>Lorraine Jackson</h3>
-                <p>Has been across multiple departments; highly effective with claim-related concerns and customer success cases.</p>
-              </div>
-            </div>
+          <div class="tl-item">
+            <h3>Q2 · Complaint taxonomy + root-cause tracking</h3>
+            <p class="muted">Standardized labels: Low Contribution, Tech Delays, Claim Delay, Coverage Denied, etc. Enabled sharper weekly analysis.</p>
           </div>
-
-          <!-- Lorie -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-1">
-                <h3>Lorie Smith</h3>
-                <p class="role">Tier 1</p>
-                <p><i class="fas fa-desktop"></i> Support Success Back Office</p>
-              </div>
-              <div class="flip-back">
-                <h3>Lorie Smith</h3>
-                <p>Supports with administrative tasks and manages communication channels</p>
-              </div>
-            </div>
+          <div class="tl-item">
+            <h3>Q3 · Review Removal Forum + public FAQ revamp</h3>
+            <p class="muted">Launched evergreen updates page and process transparency; boosted trust and reduced duplicate tickets.</p>
           </div>
-
-          <!-- Nashla -->
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front tier-3">
-                <h3>Nashla Lizardo</h3>
-                <p class="role">Tier 3</p>
-                <p><i class="fas fa-crown"></i> Head of Success Section</p>
-              </div>
-              <div class="flip-back">
-                <h3>Nashla Lizardo</h3>
-                <p>Social media expert; KPI tracking; provides consistent floor support</p>
-              </div>
-            </div>
+          <div class="tl-item">
+            <h3>Q4 · Ops workshops + BBB takeover</h3>
+            <p class="muted">Partnered with Ops to fix systemic issues; centralized BBB response ownership for faster SLAs.</p>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Changes Section -->
-<section id="changes" class="card fade-in">
-  <div class="card-header">
-    <h2><i class="fas fa-sync-alt"></i> Updates</h2>
-  </div>
-  <div class="card-body">
-    <p>
-      Since I stepped into a managerial role, the Brand Management department has undergone a foundational shift in how it operates and contributes to company-wide success. We’ve transitioned from <strong>reactive case handling</strong> to <strong>strategic, insight-driven improvements</strong>.
-    </p>
-
-    <hr>
-
-    <h4>🕵️‍♂️ Deep Complaint Analysis</h4>
-    <p>
-      We’ve redefined our approach by implementing a deep-dive analysis of all customer complaints and feedback. These insights are now compiled and shared with Operations on a <strong>weekly basis</strong> to drive systemic improvements.
-    </p>
-
-    <hr>
-
-    <h4>📊 Agent Performance Tracking</h4>
-    <p>
-      Introduced a <strong>performance tracking sheet</strong> that allows QA to detect behavioral patterns, flag coaching opportunities, and improve overall agent output—directly enhancing the customer experience.
-    </p>
-
-    <hr>
-
-    <h4>📱 Social Media Ownership</h4>
-    <p>
-      Fully took over social media support <strong>1,197 social-media-only cases resolved</strong>  from July 2024 to today.
-    </p>
-
-    <hr>
-
-    <h4>🏛️ Insight-Driven Follow-Ups</h4>
-    <p>
-      Customer Success began <strong>calling all recently closed claims</strong> to gain real insights into the customer’s experience. This shift moved us away from purely review collection and toward a richer understanding of pain points, satisfaction levels, and areas for improvement.
-    </p>
-
-    <hr>
-
-    <h4>🛡️ Guardian Complaint Oversight</h4>
-    <p>
-      Brand Management <strong>took over all Guardian-level customers</strong> who no longer qualified for the program but submitted complaints. This proactive handling helped <strong>prevent negative reviews</strong> and maintained our premium-tier reputation.
-    </p>
-
-    <hr>
-
-    <h4>🌿 Internal Complaint System</h4>
-    <p>
-      We <strong>introduced the Internal Complaints process</strong>—a completely new initiative that allows us to identify and resolve customer concerns before they escalate to third-party platforms. This has helped reduce external escalations and protect our public reputation.
-    </p>
-
-    <hr>
-
-    <h4>📄 BBB Ownership & Strategic Response</h4>
-    <p>
-      We <strong>fully took over BBB complaint handling</strong> from Compliance and introduced a new methodology:
-    </p>
-    <ul>
-      <li><strong>Providing detailed, structured breakdowns</strong> of each customer case</li>
-      <li><strong>Transparently outlining the steps</strong> we took to assist</li>
-    </ul>
-    <p>This has strengthened our credibility and improved resolution rates.</p>
-  </div>
-</section>
-
-    <!-- Enhancements -->
-<section id="changes" class="card fade-in">
-  <div class="card-header">
-    <h2><i class="fas fa-rocket"></i> Infrastructure Enhancements</h2>
-  </div>
-  <div class="card-body">
-    <p>
-      As part of our operational evolution, we’ve developed and upgraded several internal tools and modules to support scalability, accountability, and performance visibility across all areas of Brand Management.
-    </p>
-
-    <hr>
-
-    <h4>🧩 Enhanced Reviews & Ratings Module</h4>
-    <p>
-      Improved the architecture and reporting logic to better capture, categorize, and measure positive review performance across all platforms.
-    </p>
-
-    <hr>
-
-    <h4>🛠️ Complaints Module (Internal Tracking)</h4>
-    <p>
-      Launched a centralized tool to <strong>track internal complaints</strong>, both organically sourced and manually submitted—giving us better visibility into recurring issues.
-    </p>
-
-    <hr>
-
-    <h4>📈 Customer Success Module</h4>
-    <p>
-      Built a dedicated module for Customer Success operations, focused on tracking outreach, claim outcomes, and review results from post-claim follow-ups.
-    </p>
-
-    <hr>
-
-    <h4>📚 FAQ for Review Incentives</h4>
-    <p>
-      Published an internal FAQ to clarify rules, eligibility, and payout structure for the review incentive program—ensuring consistency across departments.
-    </p>
-
-    <hr>
-
-    <h4>⚙️ Negative Review Agenda Enhancements</h4>
-    <p>
-      Revamped the existing process with automations, follow-up logic, and clearer case ownership to reduce resolution delays and missed escalations.
-
-    </p>
-
-    <hr>
-
-    <h4>📊 Enhanced Reviews & Complaints Sheet</h4>
-    <p>
-      Redesigned our core tracking sheet for both positive reviews and complaints, making it easier to audit outcomes, identify trends, and assess team performance in real time.
-    </p>
-  </div>
-</section>
-
-<!-- Reddit -->
-  <section id="reddit" class="card fade-in"></section>
-  <div class="review-performance-text">
-      <h2>👾 Reddit Engagement</h2>
-      <p>To shift sentiment and build organic trust, I launched a <strong>targeted Reddit engagement project</strong> focused on high-traffic homeowner and real estate subreddits.</p>
-    <h4>📌 Scope of Work</h4>
-      <p>Engaged across <strong>9+ subreddits</strong> including r/homeowners, r/realestate, r/hvacadvice, and r/firsttimehomebuyer.</p>
-      <p>Contributed to <strong>over 60+ unique Reddit posts and comment threads</strong></p>
-      <p>Included a mix of <strong>original posts, helpful comments, upvotes, and strategic replies</strong></p>
-      <p>Responded authentically to <strong>home warranty-related discussions</strong>, inserting Liberty Home Guard into key decision-making conversations</p>
-      <p>Focused on <strong>real user experiences</strong>, trust-building language, and SEO-relevant keywords (claims process, repair timelines, specific appliances, etc.)</p>
-    <h4>🧠 Strategic Impact</h4>
-      <p>Position LHG as a <strong>credible, top-rated alternative</strong> to larger competitors like AHS and First American</p>
-      <p>Help neutralize negative threads and <strong>shift tone in high-visibility posts</strong></p>
-      <p>Boost traffic to branded review pages and increased <strong>direct lead interest from forums</strong></p>
+      <div class="card reveal">
+        <h2 style="margin:0 0 8px">Headcount & Capacity</h2>
+        <p class="muted">Team scaled to meet demand without losing quality.</p>
+        <ul>
+          <li><b>75% growth</b>: 8 → 14 agents by July.</li>
+          <li><b>Scheduling & adherence</b> improved via daily huddles + dashboards.</li>
+          <li><b>Training</b>: playbooks for escalations, refunds, and review strategies.</li>
+        </ul>
+        <div class="progress" style="margin-top:16px"><div class="bar" data-width="85"></div></div>
+        <p class="muted" style="margin-top:8px">Capacity utilization target: <b>85%</b> sustained without backlog.</p>
+      </div>
     </div>
   </section>
 
-    <!-- Stats Section -->
-
-<!-- Stats - Positive -->
-<section id="stats-positive" class="card fade-in">
-  <div class="card-header">
-    <h2><i class="fas fa-chart-line"></i> Stats – Positive Reviews</h2>
-    <p class="subtitle">Performance breakdown by month and year</p>
-  </div>
-  <div class="card-body">
-    <div class="chart-box">
-      <canvas id="reviewChart"></canvas>
+  <!-- INITIATIVES -->
+  <section id="initiatives" class="section">
+    <div class="wrap">
+      <div class="grid three">
+        <div class="card reveal">
+          <h3>🔍 Deep Complaint Analysis</h3>
+          <p class="muted">Weekly root-cause reviews turned scattered tickets into specific fixes, directly lifting CSAT and first-touch resolution.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🧠 Coaching & QA Alignment</h3>
+          <p class="muted">Targeted coaching boosted accuracy on policy math and tone; fewer escalations and refunds.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🛠️ Tooling & Automation</h3>
+          <p class="muted">Internal sheets → interactive dashboard; faster case assignment, PCF tracking, and approach templates.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🤝 Procurement Partnership</h3>
+          <p class="muted">Set clear SLAs; resolved option-latency on AC/HVAC and reduced cycle time by 27%.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🛡️ VIP Guardians</h3>
+          <p class="muted">No special treatment—just zero-friction claims. Visibility without queue-jumping.</p>
+        </div>
+        <div class="card reveal">
+          <h3>📣 Transparent Comms</h3>
+          <p class="muted">Proactive updates, improved templates, and a public FAQ that stays updated.</p>
+        </div>
+      </div>
     </div>
-
-    <div class="review-performance-text">
-      <h2><i class="fas fa-chart-bar"></i> Review Insights</h2>
-      <h4>2024 Performance</h4>
-      <p>The year started with 1,021 positive reviews in January and showed a dramatic spike in April with 2,427 reviews. However, this spike was due to every review being counted, including those from platforms that do not contribute to our core reputation metrics. It also included updated and edited reviews, technician reviews posted multiple times on the same platform, and other duplicates. As a result, the April surge does not reflect a true organic growth trend but rather an overcounting across several non-impactful sources.</p>
-      <h4>2025 Comparison</h4>
-      <p><strong>Steady Growth:</strong> Consistent month-over-month increases (30% average growth rate)</p>
-      <p><strong>Positive Trajectory:</strong> June 2025 surpassed June 2024 by 51% (1,542 vs 1,021)</p>
-      <p><strong>Catch-up Pattern:</strong> While 2025 started lower, our accelerated growth rate and improved data accuracy have positioned us to surpass 2024 totals by Q3 — indicating not just recovery, but stronger and more sustainable performance overall.</p>
-      <p><strong>Agents Collaborating Towards Reviews:</strong> While 2025 started lower with 16 agents participating in the review incentive program in January, we have increased to 32 agents participating in the review incentive program</p>
-    </div>
-  </div>
-</section>
-      
-            <!-- Performance Summary Table -->
-<div class="review-summary-table">
-  <table>
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Volume Focus</th>
-        <th>Quality Control</th>
-        <th>Result</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>2024</strong></td>
-        <td>High Volume</td>
-        <td>Low Filtering – Edited & multiple reviews allowed</td>
-        <td>Inflated numbers, lower authenticity</td>
-      </tr>
-      <tr>
-        <td><strong>2025</strong></td>
-        <td>Important Platforms</td>
-        <td>Strict: One original review per account</td>
-        <td>Lower volume initially, but increased credibility and regained upward momentum</td>
-      </tr>
-    </tbody>
-  </table>
-
-<!-- Departmental Volume Overview -->
-<div class="review-summary-table">
-    <h2><i class="fas fa-chart-pie"></i> Departmental Volume Overview</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Department</th>
-        <th>2024</th>
-        <th>2025</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Dispatch/Authos/VR - Combined</strong></td>
-        <td>177</td>
-        <td>860</td>
-        <td><strong style="color: green;">+386%</strong></td>
-      </tr>
-      <tr>
-        <td><strong>VIP</strong></td>
-        <td>23</td>
-        <td>33</td>
-        <td><strong style="color: green;">+43%</strong></td>
-      </tr>
-      <tr>
-        <td><strong>GCS</strong></td>
-        <td>177</td>
-        <td>183</td>
-        <td><strong style="color: green;">+3%</strong></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-  <!-- Ratings & Reputation Surge -->
-   <section id="stats-positive" class="card fade-in">
-<div class="review-summary-table">
-    <h2><i class="fas fa-star "></i> Ratings & Reputation Surge</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Platform / Region</th>
-        <th>Before (January 2025)</th>
-        <th>Now</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Robbinsville Google</strong></td>
-        <td>3.2 ⭐</td>
-        <td><strong style="color: green;">4.9 ⭐</strong></td>
-      </tr>
-      <tr>
-        <td><strong>California Google</strong></td>
-        <td>3.0 ⭐</td>
-        <td><strong style="color: green;">4.4 ⭐</strong></td>
-      </tr>
-      <tr>
-        <td><strong>South Carolina Google</strong></td>
-        <td>3.3 ⭐</td>
-        <td><strong style="color: green;">5.0 ⭐</strong></td>
-      </tr>
-       <tr>
-        <td><strong>Arizona Google</strong></td>
-        <td>3.5 ⭐</td>
-        <td><strong style="color: green;">4.0 ⭐</strong></td>
-      </tr>
-       <tr>
-        <td><strong>Best Company</strong></td>
-        <td>4.0 ⭐</td>
-        <td><strong style="color: green;">5.0 ⭐</strong></td>
-      </tr>
-       <tr>
-        <td><strong>Google Play Store</strong></td>
-        <td>2.9 ⭐</td>
-        <td><strong style="color: green;">4.1 ⭐</strong></td>
-      </tr>
-       <tr>
-        <td><strong>Apple App Store</strong></td>
-        <td>3.0 ⭐</td>
-        <td><strong style="color: green;">4.1 ⭐</strong></td>
-      </tr>
-       <tr>
-        <td><strong>Consumer Affairs</strong></td>
-        <td>2.9 ⭐</td>
-        <td><strong style="color: green;">3.5 ⭐</strong></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>🌍 Google-by-State Ratings</h4>
-  <p>Previously, several state-level Google listings fell <strong>4.0 stars.</strong>  As of now, <strong>every single state rating is at or above 4.0</strong>, eliminating weak spots in our local reputation footprint.</p>
-
-  <h4>🌟 Google Reputation Transformation</h4>
-  <p>When I joined, our Google presence had just over <strong>11,000 reviews</strong>, and several <strong>state-level Google listings were below 4.0 stars.</strong> Today, we have reached <strong>15,737 reviews</strong> with a <strong>4.7-star rating</strong>, and <strong>every state rating is now at or above 4.0.</strong></p>
-  <p>This improvement shows growth in both volume and quality, with <strong>over 4,700 new reviews</strong> added. It reflects the impact of structured outreach, agent workshops, and consistent follow-up strategies focused on both national and local reputation.</p>
   </section>
 
-<!-- Stats - Negative -->
-<section id="stats-negative" class="card fade-in">
-  <div class="card-header">
-    <h2><i class="fas fa-exclamation-triangle"></i> Stats – Negative Reviews</h2>
-    <p class="subtitle">Received vs Removed monthly breakdown</p>
-  </div>
-  <div class="card-body">
-    <div class="chart-box">
-      <canvas id="removalChart"></canvas>
+  <!-- KEY WINS -->
+  <section id="wins" class="section">
+    <div class="wrap">
+      <div class="grid two">
+               
+        <!-- Monthly breakdown chart -->
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">2025 Monthly Breakdown</h2>
+          <p class="muted">Received vs Removed reviews and removal rate %.</p>
+          <canvas id="monthlyChart" height="220" aria-label="Monthly chart"></canvas>
+        </div>
+
+        <!-- Main Complaint by Month (stacked) -->
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">Main Complaint Reasons by Month</h2>
+          <p class="muted">Stacked by complaint category. Hover to compare months.</p>
+          <canvas id="complaintChart" height="260" aria-label="Complaint categories by month"></canvas>
+        </div>
+
+        <!-- Positive Reviews By Department -->
+        <div class="card reveal">
+          <h2 style="margin:0 0 6px">Positive Reviews By Department</h2>
+          <p class="muted">Stacked by deparment reviews. Hover to compare months.</p>
+          <canvas id="reviewChart" height="260" aria-label="Complaint categories by month"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOALS -->
+  <section id="goals" class="section">
+    <div class="wrap grid two">
+      <div class="card reveal">
+        <h2 style="margin:0 0 6px">Next Up · 6-Month Goals</h2>
+        <ul style="margin-top:8px">
+          <li>Raise Google & Sitejabber to <b>4.5★</b> average.</li>
+          <li>Cut review-to-response time to <b>&lt; 4 hours</b>.</li>
+          <li>Launch monthly complaint-to-resolution report to Execs.</li>
+        </ul>
+        <div style="margin-top:12px">
+          <div class="muted" style="margin:10px 0 6px">Google Avg. ★ target (4.5)</div>
+          <div class="progress"><div class="bar" data-width="78"></div></div>
+          <div class="muted" style="margin:12px 0 6px">Response time target (&lt; 4h)</div>
+          <div class="progress"><div class="bar" data-width="68"></div></div>
+          <div class="muted" style="margin:12px 0 6px">Executive reporting maturity</div>
+          <div class="progress"><div class="bar" data-width="55"></div></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <h2 style="margin:0 0 6px">Shout-outs</h2>
+        <p class="muted">Team wins are team wins. Call out your top contributors here.</p>
+        <ul>
+          <li><b>Eddy</b> – VIP case triage & policy math clarity.</li>
+          <li><b>Anthony</b> – Templates & Tier 2 coaching.</li>
+          <li><b>Ivette</b> – First review removal + steady cadence.</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="review-performance-text">
-      <h2><i class="fas fa-chart-bar"></i> Negative Review Metrics</h2>
-
-      <h4>2023 Overview:</h4>
-      <p><strong>Sep–Dec 2023:</strong> Complaints started fluctuating moderately. Sep 98 received / 37 removed, Oct 124 received / 30 removed, Nov 77 received / 31 removed, Dec 65 received / 35 removed. Removal efficiency ranged from 30–50%.</p>
-
-      <h4>2024 Highlights:</h4>
-      <p><strong>Early Spike:</strong> Jan–Feb saw high complaint numbers: Jan 107 / 57 removed, Feb 99 / 44 removed, showing a 53% Removal rate.</p>
-      <p><strong>March Peak:</strong> Only 90 complaints received, but 79 removals — showcasing an 88% removal efficiency.</p>
-      <p><strong>Steady Handling:</strong> Apr–Jul had consistent handling: 98–145 complaints per month with removal ratios between 40%–65%.</p>
-      <p><strong>August Surge:</strong> Aug received the highest volume (152), with 95 removals — demonstrating strong capacity, showing a 62.5% Removal Rate</p>
-      <p><strong>End of Year:</strong> Oct–Dec removals averaged 70% effectiveness (100/89, 89/62, 114/62).</p>
-
-      <h4>2025 Trends:</h4>
-      <p><strong>Strong Start:</strong> Jan 139 complaints, 122 removed — 87% efficiency.</p>
-      <p><strong>Consistency Maintained:</strong> Feb–Apr hovered above 100 complaints and 60–95 removals.</p>
-      <p><strong>Improvement Shown:</strong> June showed 106 removals out of 152 complaints — indicating above-average capacity even as volume rose, showing a 70% removal rate.</p>
-
-      <h4>Outlook:</h4>
-      <p>The team demonstrated higher removal capacity during increased volume months, particularly in 2025. The trend points toward not only sustained volume management but improved effectiveness.</p>
-    </div>
-  </div>
 </section>
-<section id="bbb" class="card fade-in">
-  <div class="review-performance-text">
-      <h2><i class="fas fa-chart-bar"></i> BBB Complaint Reduction</h2>
 
-      <h4>Highlights:</h4>
-      <p>From <strong>January to June 2024</strong>, we received <strong>286 BBB Complaints</strong>.</p>
-      <p>From <strong>January to June 2025</strong>, that number dropped to <strong>178 BBB Complaints</strong> - a <strong style="color: red;">38% reduction</strong></p>  
-    <h4>This decline is the direct result of:</h4>
-      <p><strong>Preventative handling strategies</strong></p>
-      <p>The implementation of our <strong>Internal Complaints process</strong>, which allows us to address issues before they escalate externally.</p>  
-    
-    
-    </div>
-</section>
+    <script>
+    // ===== Smooth "reveal on scroll" using IntersectionObserver
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+      })
+    }, {rootMargin: '0px 0px -10% 0px', threshold:.08});
 
-</div>     
-    <div id="removalChartBox" class="chart-box" style="display: none;">
-      <canvas id="removalChart"></canvas>
-    </div>
-  </div>
-</section>
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial"></script>
-  <script defer src="./script.js"></script>
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // ===== Animated counters for KPI numbers
+    function animateCount(el){
+      const target = parseFloat(el.dataset.count);
+      const isFloat = !Number.isInteger(target);
+      const duration = 1200;
+      const start = performance.now();
+      function frame(now){
+        const p = Math.min(1, (now - start)/duration);
+        const val = target * (0.5 - Math.cos(Math.PI*p)/2); // easeInOut
+        el.textContent = isFloat ? val.toFixed(1) : Math.round(val);
+        if(p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    document.querySelectorAll('.num').forEach(animateCount);
+
+    // ===== Progress bars fill when in view
+    const barIO = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.style.width = e.target.dataset.width + '%'; barIO.unobserve(e.target); }
+      })
+    }, {threshold:.3});
+    document.querySelectorAll('.bar').forEach(b=>barIO.observe(b));
+
+    // ===== Charts (Chart.js via CDN)
+    const ratingCtx = document.getElementById('ratingChart');
+    if(ratingCtx){
+      new Chart(ratingCtx, {
+        type:'line',
+        data:{
+          labels:['Q1','Q2','Q3','Q4'],
+          datasets:[{
+            label:'Average Rating',
+            data:[3.7, 4.0, 4.2, 4.4],
+            borderWidth:3,
+            tension:.4,
+            fill:true,
+            backgroundColor:'rgba(37,99,235,.12)',
+            borderColor:'rgba(37,99,235,1)',
+            pointRadius:3
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{legend:{display:false}},
+          scales:{y:{suggestedMin:3, suggestedMax:5, ticks:{stepSize:.2}}}
+        }
+      });
+    }
+
+    const removalCtx = document.getElementById('removalChart');
+    if(removalCtx){
+      new Chart(removalCtx, {
+        type:'bar',
+        data:{
+          labels:['Q1','Q2','Q3','Q4'],
+          datasets:[{
+            label:'Removals',
+            data:[52, 71, 88, 101],
+            borderWidth:0,
+            backgroundColor:['rgba(37,99,235,.85)','rgba(99,102,241,.85)','rgba(59,130,246,.85)','rgba(14,165,233,.85)']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{legend:{display:false}},
+          scales:{y:{beginAtZero:true}}
+        }
+      });
+    }
+
+    // ===== 2025 Monthly dataset + chart (Received/Removed/%)
+    const monthlyData = {
+      labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+      received: [139,126,115,151,169,152,197],
+      removed:  [122, 96, 65, 76, 94,106,167],
+      percentages: [87.7,76.1,56.5,50.3,55.6,69.7,84.7]
+    };
+
+    const monthlyCtx = document.getElementById('monthlyChart');
+    if (monthlyCtx){
+      new Chart(monthlyCtx.getContext('2d'), {
+        data: {
+          labels: monthlyData.labels,
+          datasets: [
+            {
+              type: "bar",
+              label: "Received",
+              data: monthlyData.received,
+              backgroundColor: "rgba(239,68,68,.7)",
+              borderWidth: 0
+            },
+            {
+              type: "bar",
+              label: "Removed",
+              data: monthlyData.removed,
+              backgroundColor: "rgba(37,99,235,.7)",
+              borderWidth: 0
+            },
+            {
+              type: "line",
+              label: "Removal %",
+              data: monthlyData.percentages,
+              yAxisID: "y1",
+              borderColor: "#10b981",
+              pointBackgroundColor: "#10b981",
+              borderWidth: 2,
+              tension: 0.3,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: true } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: "Reviews" } },
+            y1: {
+              position: "right",
+              min: 0,
+              max: 100,
+              ticks: { callback: v => v + "%" },
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: "Removal %" }
+            }
+          }
+        }
+      });
+    }
+
+    // ===== Main Complaint by Month (stacked bar) — UPDATED WITH JAN–JUL
+    const complaintMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+    const categories = [
+      "Low Contribution",
+      "Technician Delays",
+      "Misled During Sales Call",
+      "Labor Not Covered",
+      "Claim Delays",
+      "Coverage Denied",
+      "Parts/Unit Error",
+      "Poor Communication"
+    ];
+
+    // Exact counts per month (Jan..Jul 2025)
+    const complaintSeries = {
+      "Low Contribution":         [36, 32, 29, 22, 26, 39, 37],
+      "Technician Delays":        [13, 11, 15, 24, 24, 40, 62],
+      "Misled During Sales Call": [ 4,  4,  8, 13, 21, 23, 22],
+      "Labor Not Covered":        [ 8, 11,  2, 16, 14, 22, 33],
+      "Claim Delays":             [14, 15, 13, 22, 32, 78, 74],
+      "Coverage Denied":          [17,  3,  9, 26, 39,  7, 63],
+      "Parts/Unit Error":         [ 0,  2,  1,  0,  1,  0,  0],
+      "Poor Communication":       [ 0,  2,  2, 12, 37, 78, 95]
+    };
+
+    const palette = [
+      "rgba(37,99,235,.8)",   // blue
+      "rgba(99,102,241,.8)",  // indigo
+      "rgba(59,130,246,.8)",  // blue-500
+      "rgba(14,165,233,.8)",  // sky
+      "rgba(239,68,68,.8)",   // red
+      "rgba(234,88,12,.8)",   // orange
+      "rgba(16,185,129,.8)",  // emerald
+      "rgba(139,92,246,.8)"   // violet
+    ];
+
+    const complaintDatasets = categories.map((cat, i) => ({
+      label: cat,
+      data: complaintSeries[cat],
+      backgroundColor: palette[i],
+      borderWidth: 0,
+      stack: "complaints"
+    }));
+
+    const complaintCtx = document.getElementById('complaintChart');
+    if (complaintCtx){
+      new Chart(complaintCtx.getContext('2d'), {
+        type: "bar",
+        data: {
+          labels: complaintMonths,
+          datasets: complaintDatasets
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: {
+              callbacks: {
+                footer: (items) => {
+                  const sum = items.reduce((a, it) => a + it.parsed.y, 0);
+                  return "Total: " + sum;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, title: { display: true, text: "Count" } }
+          }
+        }
+      });
+    }
+
+    // ===== Main Reviews by Department (stacked bar) — UPDATED WITH JAN–JUL
+    const ReviewsMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+    const categories2 = [
+      "Dispatch",
+      "Authorizations",
+      "Vendors Relations",
+      "Retentions",
+      "Sales",
+      "Billing",
+      "GCS",
+      "VIP",
+      "Resolutions",
+      "General"
+    ];
+
+    // Exact counts per month (Jan..Jul 2025)
+    const ReviewsSeries = {
+      "Dispatch":         [59, 5, 46, 234, 302, 336, 225],
+      "Authorizations":        [36, 147, 185, 218, 208, 241, 124],
+      "Vendors Relations": [96, 179, 174, 224, 341, 283, 300],
+      "Retentions":        [1, 7, 16, 5, 7, 3, 10],
+      "Sales":             [7, 11, 8, 11, 27, 43, 49],
+      "Billing":          [2, 2, 14, 11, 10, 4, 3],
+      "GCS":         [43, 117, 164, 167, 165, 156, 158],
+      "VIP":       [5, 14, 2, 45, 33, 7, 1],
+      "Resolutions":       [11, 16, 33, 53, 66, 8, 12],
+      "General":       [226, 210, 282, 231, 219, 240, 357]
+    };
+
+    const palette2 = [
+      "rgba(37,99,235,.8)",   // blue
+      "rgba(99,102,241,.8)",  // indigo
+      "rgba(59,130,246,.8)",  // blue-500
+      "rgba(14,165,233,.8)",  // sky
+      "rgba(239,68,68,.8)",   // red
+      "rgba(234,88,12,.8)",   // orange
+      "rgba(16,185,129,.8)",  // emerald
+      "rgba(139,92,246,.8)"   // violet
+    ];
+
+    const reviewDatasets = categories2.map((cat1, i) => ({
+      label: cat1,
+      data: ReviewsSeries[cat1],
+      backgroundColor: palette2[i],
+      borderWidth: 0,
+      stack: "reviews"
+    }));
+
+    const reviewCtx = document.getElementById('reviewChart');
+    if (reviewCtx){
+      new Chart(reviewCtx.getContext('2d'), {
+        type: "bar",
+        data: {
+          labels: ReviewsSeries,
+          datasets: reviewDatasets
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { position: "bottom" },
+            tooltip: {
+              callbacks: {
+                footer: (items) => {
+                  const sum = items.reduce((a, it) => a + it.parsed.y, 0);
+                  return "Total: " + sum;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, title: { display: true, text: "Count" } }
+          }
+        }
+      });
+    }
+
+
+
+
+    // ===== Highlight active nav link on scroll
+    const sections = [...document.querySelectorAll('section[id]')];
+    const navLinks = [...document.querySelectorAll('.nav a')];
+    const spy = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = e.target.getAttribute('id');
+          navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+        }
+      })
+    }, {threshold:.4});
+    sections.forEach(s=>spy.observe(s));
+  </script>
 </body>
 </html>
